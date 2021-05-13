@@ -329,6 +329,7 @@ namespace Pacman {
             this.panel299 = new System.Windows.Forms.Panel();
             this.pacman = new System.Windows.Forms.Panel();
             this.GameTimer = new System.Windows.Forms.Timer(this.components);
+            this.blinky = new System.Windows.Forms.Panel();
             this.panel95.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -3070,12 +3071,22 @@ namespace Pacman {
             this.GameTimer.Interval = 1;
             this.GameTimer.Tick += new System.EventHandler(this.GameTimer_Tick);
             // 
+            // blinky
+            // 
+            this.blinky.BackColor = System.Drawing.Color.Red;
+            this.blinky.Location = new System.Drawing.Point(459, 432);
+            this.blinky.Name = "blinky";
+            this.blinky.Size = new System.Drawing.Size(58, 58);
+            this.blinky.TabIndex = 5;
+            this.blinky.Tag = "enemy";
+            // 
             // pacmanGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(981, 1137);
+            this.Controls.Add(this.blinky);
             this.Controls.Add(this.pacman);
             this.Controls.Add(this.panel299);
             this.Controls.Add(this.panel298);
@@ -3693,6 +3704,7 @@ namespace Pacman {
         private System.Windows.Forms.Panel pacman;
         private System.Windows.Forms.Timer GameTimer;
         private System.Windows.Forms.Panel panel300;
+        private System.Windows.Forms.Panel blinky;
     }
 }
 

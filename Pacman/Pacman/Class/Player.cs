@@ -8,12 +8,13 @@ using System.Drawing;
 
 namespace Pacman {
     class Player {
-        public int speed;
+        public int speed = 3;
         public string newDir = null;
         string agoDir = null;
         public int posX = 13;
         public int posY = 0;
-        int savePos = 0;
+        int savePosX = -1;
+        int savePosY = -1;
 
         public bool isLeft = false;
         public bool isRight = false;
@@ -31,12 +32,11 @@ namespace Pacman {
 
         public Player(Panel self) {
             this.self = self;
-           // self.Location = hitbox.Location;
         }
         public Player() {
 
         }
-        private void DirClear() {
+        public void DirClear() {
             isLeft = false;
             isRight = false;
             isUp = false;
@@ -52,7 +52,6 @@ namespace Pacman {
             if (isRight)
                 agoDir = "R";
             DirClear();
-            speed = 3;
             switch (e.KeyCode) {
                 case Keys.Up:
                     isUp = true;
@@ -103,11 +102,16 @@ namespace Pacman {
                 else
                     self.Top += speed;
             }
-            if(isLeft){
+            if(isLeft) {
+                if (posX == 0 && posY == 14) {
+                    self.Left -= speed;
+                    if(self.Location.X <= -20)
+                        self.Left = 955;
+                    return;
+                }
                 if (map.ground[posY, posX - 1] == 1) {
-                    if (self.Location.X >= (posX * 35 + 10) - 23) {
+                    if (self.Location.X >= (posX * 35 + 10) - 23)
                         self.Left -= speed;
-                    }
                     else
                         return;
                 }
@@ -115,10 +119,15 @@ namespace Pacman {
                     self.Left -= speed;
             }
             if (isRight) {
+                if(posX == 27 && posY == 14) {
+                    self.Left += speed;
+                    if (self.Location.X >= 955)
+                        self.Left = -20;
+                    return;
+                }
                 if (map.ground[posY, posX + 1] == 1) {
-                    if (self.Location.X <= (posX * 35 + 10) - 25) {
+                    if (self.Location.X <= (posX * 35 + 10) - 25)
                         self.Left += speed;
-                    }
                         return;
                 }
                 else
@@ -126,105 +135,163 @@ namespace Pacman {
             }
         }
         int k = 0;
-        public void CurveCheck() {
-
+        public void CurveCheck() { // 커브를 찾는 함수
+            if (!isInput)
+                return;
             int i;
             switch (agoDir) {
                 case "U":
-                    if (isDown) {
-
-                    }
-                    break;
-                case "L":
-                    if (isUp) {
-                        if (isInput) {
-                            //왼쪽으로 계속 가다가, 위쪽길이 보이면 그쪽으로 올라가야 함.
-                            //내 현재 포지션을 기준으로 왼쪽으로 계속 보내면서 위쪽에 길이 있는지 확인.
-                            //while (true) {
-                            //    if (map.ground[posY - 1, posX - i] != 1) { //현재 포지션 기준으로 왼쪽으로 계속 움직이며 위쪽을 확인해줌.
-                            //        savePos = posX - i;
-                            //        break;
-                            //    }
-                            //    if (posX == i) {
-                            //        i = -1;
-                            //        break;
-                            //    }
-                            //    i++;
-                            //}
-                            for(i = 0; i <= posX; i++) {
-                                if(map.ground[posY-1, posX-i] != 1) {
-                                    savePos = posX - i;
-                                    break;
-                                }
-                            }
-                            if (i == -1) {
-                                break;
-                            }
-                            isInput = false;
-                        }
-                        isLeft = true;
-                        isUp = false;
-                    }
-                    if (isDown) {
-                        for (i = 0; i <= posX; i++) {
-                            if (map.ground[posY + 1, posX - i] != 1) {
-                                savePos = posX - i;
+                    if (isLeft) {
+                        for(i = 0; i<= posY; i++) {
+                            if(map.ground[posY-i, posX-1] != 1) {
+                                savePosY = posY - i;
                                 break;
                             }
                         }
                         isInput = false;
-                        isLeft = true;
-                        isDown = false;
+                        DirClear();
+                        isUp = true;
                     }
-                    break;
-            }
-        }
-        private void CurveCheckPrivate(int i) {
-            switch (agoDir) {
-                case "U":
-                    break;
-                case "D":
-                    break;
-                case "L":
-                    if (isUp) {
-                        for (i = 0; i <= posX; i++) {
-                            if (map.ground[posY - 1, posX - i] != 1) {
-                                savePos = posX - i;
+                    if (isRight) {
+                        for(i = 0; i<=posY; i++) {
+                            if(map.ground[posY-i, posX+1] != 1) {
+                                savePosY = posY - i;
                                 break;
                             }
                         }
+                        isInput = false;
+                        DirClear();
+                        isUp = true;
+                    }
+                    break;
+
+                case "D":
+                    if (isLeft) {
+                        for (i = 0; posY+i <= 30; i++) {
+                            if (map.ground[posY + i, posX-1] != 1) {
+                                savePosY = posY + i;
+                                break;
+                            }
+                        }
+                        isInput = false;
+                        DirClear();
+                        isDown = true;
+                    }
+                    if (isRight) {
+                        for(i = 0; posY+i <= 30; i++) {
+                            if(map.ground[posY+i, posX+1] != 1) {
+                                savePosY = posY + i;
+                                break;
+                            }
+                        }
+                        isInput = false;
+                        DirClear();
+                        isDown = true;
+                    }
+                    break;
+
+                case "L":
+                    if (isUp) {
+                        for(i = 0; i <= posX; i++) {
+                            if(map.ground[posY-1, posX-i] != 1) {
+                                savePosX = posX - i;
+                                break;
+                            }
+                        }
+                        isInput = false;
+                        DirClear();
+                        isLeft = true;
                     }
                     if (isDown) {
                         for (i = 0; i <= posX; i++) {
                             if (map.ground[posY + 1, posX - i] != 1) {
-                                savePos = posX - i;
+                                savePosX = posX - i;
                                 break;
                             }
                         }
+                        isInput = false;
+                        DirClear();
+                        isLeft = true;
                     }
                     break;
-                case "R":
-                    //new
 
+                case "R":
+                    if (isUp) {
+                        for (i = 0; i + posX <= 27; i++) {
+                            if (map.ground[posY - 1,posX+i] != 1) {
+                                savePosX = posX + i;
+                                break;
+                            }
+                        }
+                        isInput = false;
+                        DirClear();
+                        isRight = true;
+                    }
+                    if (isDown) {
+                        for(i = 0; i + posX <= 27; i++) {
+                            if(map.ground[posY+1, posX+i] != 1) {
+                                savePosX = posX + i;
+                                break;
+                            }
+                        }
+                        isInput = false;
+                        DirClear();
+                        isRight = true;
+                    }
                     break;
             }
         }
-        public void CurveMove() {
-            if (posX == savePos) {
+        public void CurveMove() { // 찾은 커브로 움직이는 함수
+            if (posX == savePosX || posY == savePosY) {
                 isCurveMove = true;
                 switch (agoDir) {
                     case "U":
-                        break;
-                    case "D":
-                        break;
-                    case "L":
-                        if (self.Location.X >= (posX * 35 + 10) - 23) {
-                            self.Left -= speed;
-                        }
+                        if (self.Location.Y >= (posY * 35 + 70) - 23)
+                            self.Top -= speed;
                         else {
                             isCurveMove = false;
                             DirClear();
-                            savePos = 0;
+                            savePosY = -1;
+                            switch (newDir) {
+                                case "L":
+                                    isLeft = true;
+                                    agoDir = null;
+                                    break;
+                                case "R":
+                                    isRight = true;
+                                    agoDir = null;
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case "D":
+                        if (self.Location.Y <= (posY * 35 + 70) - 25)
+                            self.Top += speed;
+                        else {
+                            isCurveMove = false;
+                            DirClear();
+                            savePosY = -1;
+                            switch (newDir) {
+                                case "L":
+                                    isLeft = true;
+                                    agoDir = null;
+                                    break;
+                                case "R":
+                                    isRight = true;
+                                    agoDir = null;
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case "L":
+                        if (self.Location.X >= (posX * 35 + 10) - 23)
+                            self.Left -= speed;
+                        else {
+                            isCurveMove = false;
+                            DirClear();
+                            savePosX = -1;
                             switch (newDir) {
                                 case "U":
                                     isUp = true;
@@ -237,7 +304,25 @@ namespace Pacman {
                             }
                         }
                         break;
+
                     case "R":
+                        if (self.Location.X <= (posX * 35 + 10) - 25)
+                            self.Left += speed;
+                        else {
+                            isCurveMove = false;
+                            DirClear();
+                            savePosX = -1;
+                            switch (newDir) {
+                                case "U":
+                                    isUp = true;
+                                    agoDir = null;
+                                    break;
+                                case "D":
+                                    isDown = true;
+                                    agoDir = null;
+                                    break;
+                            }
+                        }
                         break;
                 }
             }
@@ -268,14 +353,6 @@ namespace Pacman {
         //        if (hitbox.Bounds.IntersectsWith(x.Bounds)) { }
         //            //멈추는 로직
         //    }
-        //}
-        //public void Teleport() {
-        //    if(isLeft)
-        //        if (hitbox.Location.X <= -20)
-        //            hitbox.Left = 955;
-        //    if(isRight)
-        //        if (hitbox.Location.X >= 950)
-        //            hitbox.Left = -10;
         //}
     }
 }

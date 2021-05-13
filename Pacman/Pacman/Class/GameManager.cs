@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Pacman {
     class GameManager {
         int scoreInt = 0;
+        int eatItem = 0;
+
+        bool gameClear = false;
 
         Player player = new Player();
         Label score;
@@ -23,23 +27,38 @@ namespace Pacman {
                 if (self.Bounds.IntersectsWith(x.Bounds)) {
                     x.Visible = false;
                     scoreInt += 10;
+                    eatItem++;
                     score.Text = scoreInt.ToString();
                 }
             if((string)x.Tag == "superItem" && x.Visible == true)
                 if (self.Bounds.IntersectsWith(x.Bounds)) {
                     x.Visible = false;
                     scoreInt += 50;
+                    eatItem++;
                     score.Text = scoreInt.ToString();
                 }
         }
+        public void GameControl() { // 아이템 총 갯수 244
+            if (eatItem == 244) {
+                self.Left = 460;
+                self.Top = 851;
+                player.DirClear();
 
-        public void GameStart(Control x) { // 시작 로케이션 값 = 460, 851
-            //스타팅 설정.
-            self.Left = 460;
-            self.Top = 851;
-            //아이템 다시 생성
+                eatItem = 0;
+                gameClear = true;
+            }
+        }
+        public void ItemReCreate(Control x) {
+            if (!gameClear)
+                return;
             if ((string)x.Tag == "item" || (string)x.Tag == "superItem")
                 x.Visible = true;
+        }
+        public void GameReStart() {
+            if (!gameClear)
+                return;
+            Thread.Sleep(1000);
+            gameClear = false;
         }
     }
 }

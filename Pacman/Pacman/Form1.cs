@@ -28,15 +28,17 @@ namespace Pacman {
                 player.PlayerMove();
             player.CurveCheck();
             player.CurveMove();
+            manager.GameControl();
             //player.HitboxMove();
-            //player.Teleport();
-            //foreach (Control x in this.Controls) {
-            //    if (x is Panel) {
-            //        manager.ItemEat(x);
-            //        if (player.gameStart)
-            //            player.BlockWall(x);
-            //    }
-            //}
+            foreach (Control x in this.Controls) {
+                if (x is Panel) {
+                    manager.ItemEat(x);
+                    manager.ItemReCreate(x);
+                    //        if (player.gameStart)
+                    //            player.BlockWall(x);
+                }
+            }
+            manager.GameReStart();
         }
     }
 }
