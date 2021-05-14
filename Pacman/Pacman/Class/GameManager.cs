@@ -10,6 +10,7 @@ namespace Pacman {
     class GameManager {
         int scoreInt = 0;
         int eatItem = 0;
+        public int level = 1;
 
         bool gameClear = false;
 
@@ -20,6 +21,9 @@ namespace Pacman {
         public GameManager(Panel self, Label score) {
             this.self = self;
             this.score = score;
+        }
+        public GameManager() {
+
         }
 
         public void ItemEat(Control x) {

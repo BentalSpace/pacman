@@ -12,10 +12,13 @@ namespace Pacman {
     public partial class pacmanGame : Form {
         Player player;
         GameManager manager;
+        Enemy enemy;
+
         public pacmanGame() {
             InitializeComponent();
             player = new Player(pacman);
             manager = new GameManager(pacman, lblScore);
+            enemy = new Enemy(pacman, blinky);
         }
 
         private void pacmanGame_KeyDown(object sender, KeyEventArgs e) {
@@ -29,16 +32,18 @@ namespace Pacman {
             player.CurveCheck();
             player.CurveMove();
             manager.GameControl();
-            //player.HitboxMove();
             foreach (Control x in this.Controls) {
                 if (x is Panel) {
                     manager.ItemEat(x);
                     manager.ItemReCreate(x);
-                    //        if (player.gameStart)
-                    //            player.BlockWall(x);
                 }
             }
             manager.GameReStart();
+        }
+
+        private void EnemyTimer_Tick(object sender, EventArgs e) {
+            //enemy.ChaseScatterChange();
+            //enemy.test();
         }
     }
 }

@@ -8,20 +8,19 @@ using System.Drawing;
 
 namespace Pacman {
     class Player {
-        public int speed = 3;
-        public string newDir = null;
+        int speed = 3;
+        string newDir = null;
         string agoDir = null;
         public int posX = 13;
         public int posY = 0;
         int savePosX = -1;
         int savePosY = -1;
 
-        public bool isLeft = false;
-        public bool isRight = false;
-        public bool isUp = false;
-        public bool isDown =false;
-        public bool gameStart = false;
         public bool isCurveMove = false;
+        bool isLeft = false;
+        bool isRight = false;
+        bool isUp = false;
+        bool isDown =false;
         bool isInput = false;
 
         Panel self;
@@ -73,7 +72,6 @@ namespace Pacman {
                     break;
             }
             isInput = true;
-            gameStart = true;
         }
         public void PosCheak() {
             double x1 = self.Location.X - 10;
@@ -134,7 +132,6 @@ namespace Pacman {
                     self.Left += speed;
             }
         }
-        int k = 0;
         public void CurveCheck() { // 커브를 찾는 함수
             if (!isInput)
                 return;
