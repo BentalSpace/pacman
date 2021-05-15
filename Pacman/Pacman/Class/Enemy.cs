@@ -1,60 +1,108 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Threading;
 
 namespace Pacman {
     class Enemy {
-        int redPosX = 0;
-        int redPosY = 0;
+        int speed = 3;
+        int redPosX = 13;
+        int redPosY = 11;
         double distanceU = 0;
         double distanceD = 0;
         double distanceL = 0;
         double distanceR = 0;
         string redLastDir = "L";
+        string dir = "L";
 
-        bool isChaseScatter = false; // true일땐 추격 / false일땐 해산
+        //bool isChaseScatter = false; // true일땐 추격 / false일땐 해산
 
         Panel self;
         Panel red;
 
-        GameManager manager = new GameManager();
-        Player player = new Player();
+        //GameManager manager = new GameManager();
         Map map = new Map();
+
         public Enemy(Panel self, Panel red) {
             this.self = self;
             this.red = red;
         }
-        public void BlinkyChase() {
+        public void BlinkyChaseCheak() {
+            double min = Double.MaxValue;
+            double x1 = self.Location.X - 10;
+            double x2 = Math.Ceiling(x1 / 35);
+            int playerX = (int)x2;
+            double y1 = self.Location.Y - 70;
+            double y2 = Math.Ceiling(y1 / 35);
+            int playerY = (int)y2;
             //유클리드 거리 계산
             if (redLastDir != "D") // 위 이동
-                if(map.ground[redPosY-1, redPosX] != 1) {
-                    int x = redPosX - player.posX;
-                    int y = (redPosY-1) - player.posY;
-                    distanceU = Math.Pow(x, 2) + Math.Pow(y, 2);
+                if (map.groundWL[redPosY - 1, redPosX] != 1) {
+                    int x = redPosX - playerX;
+                    int y = (redPosY - 1) - playerY;
+                    distanceU = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                    min = distanceU;
+                    dir = "U";
                 }
-            if(redLastDir != "U") // 아래 이동
-                if(map.ground[redPosY +1, redPosX] != 1) {
-                    int x = redPosX - player.posX;
-                    int y = (redPosY + 1) - player.posY;
-                    distanceD = Math.Pow(x, 2) + Math.Pow(y, 2);
+            if (redLastDir != "U") // 아래 이동
+                if (map.groundWL[redPosY + 1, redPosX] != 1) {
+                    int x = redPosX - playerX;
+                    int y = (redPosY + 1) - playerY;
+                    distanceD = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                    if (min > distanceD) {
+                        min = distanceD;
+                        dir = "D";
+                    }
                 }
-            if(redLastDir != "R") // 왼쪽 이동
-                if(map.ground[redPosY, redPosX-1] != 1) {
-                    int x = (redPosX - 1) - player.posX;
-                    int y = redPosY - player.posY;
-                    distanceL = Math.Pow(x, 2) + Math.Pow(y, 2);
+            if (redLastDir != "R") // 왼쪽 이동
+                if (map.groundWL[redPosY, redPosX - 1] != 1) {
+                    int x = (redPosX - 1) - playerX;
+                    int y = redPosY - playerY;
+                    distanceL = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                    if (min > distanceL) {
+                        min = distanceL;
+                        dir = "L";
+                    }
                 }
-            if(redLastDir != "L") // 오른쪽 이동
-                if(map.ground[redPosY, redPosX+1] != 1) {
-                    int x = (redPosX + 1) - player.posX;
-                    int y = redPosY - player.posY;
-                    distanceR = Math.Pow(x, 2) + Math.Pow(y, 2);
+            if (redLastDir != "L") // 오른쪽 이동
+                if (map.groundWL[redPosY, redPosX + 1] != 1) {
+                    int x = (redPosX + 1) - playerX;
+                    int y = redPosY - playerY;
+                    distanceR = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                    if (min > distanceR) {
+                        dir = "R";
+                    }
                 }
-            //가장 작은 수를 찾아서, 그 방향으로 이동한다.
+            distanceU = 0;
+            distanceD = 0;
+            distanceL = 0;
+            distanceR = 0;
+            // 초기화가 굳이 필요 없을지도?
+            BlinkyChaseMove();
+        }
+        public void BlinkyChaseMove() {
+            //커브 쪽에 있을때 한번 막아야 한다. 안하면 뒤로 갈 수 있음
+            switch (dir) {
+                case "U":
+                        if (red.Location.Y >= (redPosY * 35 + 70) - 23)
+                            red.Top -= speed;
+                    red.Top -= speed;
+                    redLastDir = "U";
+                    break;
+                case "D":
+                    red.Top += speed;
+                    redLastDir = "D";
+                    break;
+                case "L":
+                    red.Left -= speed;
+                    redLastDir = "L";
+                    break;
+                case "R":
+                    red.Left += speed;
+                    redLastDir = "R";
+                    break;
+                default:
+                    MessageBox.Show("Test");
+                    break;
+            }
         }
         public void BlinkyScatter() {
             //1시
@@ -68,63 +116,60 @@ namespace Pacman {
             double y2 = Math.Ceiling(y1 / 35);
             redPosY = (int)y2;
         }
-        public void ChaseScatterChange() {
-            switch (manager.level) {
-                case 1:
-                    Thread.Sleep(7000);
-                    isChaseScatter = true;
-                    Thread.Sleep(20000);
-                    isChaseScatter = false;
-                    Thread.Sleep(7000);
-                    isChaseScatter = true;
-                    Thread.Sleep(20000);
-                    isChaseScatter = false;
-                    Thread.Sleep(5000);
-                    isChaseScatter = true;
-                    Thread.Sleep(20000);
-                    isChaseScatter = false;
-                    Thread.Sleep(5000);
-                    isChaseScatter = true;
-                    break;
-                case 2:
-                case 3:
-                case 4:
-                    Thread.Sleep(7000);
-                    MessageBox.Show("TeEeeest");
-                    isChaseScatter = true;
-                    Thread.Sleep(20000);
-                    isChaseScatter = false;
-                    Thread.Sleep(7000);
-                    isChaseScatter = true;
-                    Thread.Sleep(20000);
-                    isChaseScatter = false;
-                    Thread.Sleep(5000);
-                    isChaseScatter = true;
-                    Thread.Sleep(1033140);
-                    isChaseScatter = false;
-                    Thread.Sleep(10);
-                    isChaseScatter = true;
-                    break;
-                default:
-                    Thread.Sleep(5000);
-                    isChaseScatter = true;
-                    Thread.Sleep(20000);
-                    isChaseScatter = false;
-                    Thread.Sleep(5000);
-                    isChaseScatter = true;
-                    Thread.Sleep(20000);
-                    isChaseScatter = false;
-                    Thread.Sleep(5000);
-                    isChaseScatter = true;
-                    Thread.Sleep(1037140);
-                    isChaseScatter = false;
-                    Thread.Sleep(10);
-                    isChaseScatter = true;
-                    break;
-            }
-        }
-        public void test() {
-            MessageBox.Show("Test");
-        }
+        //public void ChaseScatterChange() {
+        //    switch (manager.level) {
+        //        case 1:
+        //            Thread.Sleep(7000);
+        //            isChaseScatter = true;
+        //            Thread.Sleep(20000);
+        //            isChaseScatter = false;
+        //            Thread.Sleep(7000);
+        //            isChaseScatter = true;
+        //            Thread.Sleep(20000);
+        //            isChaseScatter = false;
+        //            Thread.Sleep(5000);
+        //            isChaseScatter = true;
+        //            Thread.Sleep(20000);
+        //            isChaseScatter = false;
+        //            Thread.Sleep(5000);
+        //            isChaseScatter = true;
+        //            break;
+        //        case 2:
+        //        case 3:
+        //        case 4:
+        //            Thread.Sleep(7000);
+        //            MessageBox.Show("TeEeeest");
+        //            isChaseScatter = true;
+        //            Thread.Sleep(20000);
+        //            isChaseScatter = false;
+        //            Thread.Sleep(7000);
+        //            isChaseScatter = true;
+        //            Thread.Sleep(20000);
+        //            isChaseScatter = false;
+        //            Thread.Sleep(5000);
+        //            isChaseScatter = true;
+        //            Thread.Sleep(1033140);
+        //            isChaseScatter = false;
+        //            Thread.Sleep(10);
+        //            isChaseScatter = true;
+        //            break;
+        //        default:
+        //            Thread.Sleep(5000);
+        //            isChaseScatter = true;
+        //            Thread.Sleep(20000);
+        //            isChaseScatter = false;
+        //            Thread.Sleep(5000);
+        //            isChaseScatter = true;
+        //            Thread.Sleep(20000);
+        //            isChaseScatter = false;
+        //            Thread.Sleep(5000);
+        //            isChaseScatter = true;
+        //            Thread.Sleep(1037140);
+        //            isChaseScatter = false;
+        //            Thread.Sleep(10);
+        //            isChaseScatter = true;
+        //            break;
+        //    }
+        //}
     }
 }

@@ -13,10 +13,11 @@ namespace Pacman {
         Player player;
         GameManager manager;
         Enemy enemy;
+        
 
         public pacmanGame() {
             InitializeComponent();
-            player = new Player(pacman);
+            player = new Player(pacman, blinky);
             manager = new GameManager(pacman, lblScore);
             enemy = new Enemy(pacman, blinky);
         }
@@ -32,6 +33,8 @@ namespace Pacman {
             player.CurveCheck();
             player.CurveMove();
             manager.GameControl();
+            enemy.PosCheak();
+            enemy.BlinkyChaseCheak();
             foreach (Control x in this.Controls) {
                 if (x is Panel) {
                     manager.ItemEat(x);
@@ -39,11 +42,6 @@ namespace Pacman {
                 }
             }
             manager.GameReStart();
-        }
-
-        private void EnemyTimer_Tick(object sender, EventArgs e) {
-            //enemy.ChaseScatterChange();
-            //enemy.test();
         }
     }
 }

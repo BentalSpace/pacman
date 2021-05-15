@@ -12,7 +12,7 @@ namespace Pacman {
         string newDir = null;
         string agoDir = null;
         public int posX = 13;
-        public int posY = 0;
+        public int posY = 23;
         int savePosX = -1;
         int savePosY = -1;
 
@@ -24,13 +24,13 @@ namespace Pacman {
         bool isInput = false;
 
         Panel self;
-        //Panel hitbox;
+        Panel red;
 
         Map map = new Map();
 
-
-        public Player(Panel self) {
+        public Player(Panel self, Panel red) {
             this.self = self;
+            this.red = red;
         }
         public Player() {
 
@@ -81,7 +81,10 @@ namespace Pacman {
             double y2 = Math.Ceiling(y1 / 35);
             posY = (int)y2;
         }
+        int k = 0;
         public void PlayerMove() {
+            if (k == 0)
+                MessageBox.Show(k++ + " " + posX + " " + posY + " ");
             if(isUp){
                 if (map.ground[posY-1, posX] == 1) {
                     if (self.Location.Y >= (posY * 35 + 70) - 23)
