@@ -34,7 +34,10 @@ namespace Pacman {
             player.CurveMove();
             manager.GameControl();
             enemy.PosCheak();
-            enemy.BlinkyChaseCheak();
+            if(!enemy.posChange)
+                enemy.BlinkyChaseCheak();
+            if (enemy.posChange)
+                enemy.PosMove();
             foreach (Control x in this.Controls) {
                 if (x is Panel) {
                     manager.ItemEat(x);

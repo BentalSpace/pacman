@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing;
 
 namespace Pacman {
     class Player {
@@ -20,7 +15,7 @@ namespace Pacman {
         bool isLeft = false;
         bool isRight = false;
         bool isUp = false;
-        bool isDown =false;
+        bool isDown = false;
         bool isInput = false;
 
         Panel self;
@@ -81,12 +76,9 @@ namespace Pacman {
             double y2 = Math.Ceiling(y1 / 35);
             posY = (int)y2;
         }
-        int k = 0;
         public void PlayerMove() {
-            if (k == 0)
-                MessageBox.Show(k++ + " " + posX + " " + posY + " ");
-            if(isUp){
-                if (map.ground[posY-1, posX] == 1) {
+            if (isUp) {
+                if (map.ground[posY - 1, posX] == 1) {
                     if (self.Location.Y >= (posY * 35 + 70) - 23)
                         self.Top -= speed;
                     return;
@@ -103,24 +95,23 @@ namespace Pacman {
                 else
                     self.Top += speed;
             }
-            if(isLeft) {
+            if (isLeft) {
                 if (posX == 0 && posY == 14) {
                     self.Left -= speed;
-                    if(self.Location.X <= -20)
+                    if (self.Location.X <= -20)
                         self.Left = 955;
                     return;
                 }
                 if (map.ground[posY, posX - 1] == 1) {
                     if (self.Location.X >= (posX * 35 + 10) - 23)
                         self.Left -= speed;
-                    else
-                        return;
+                    return;
                 }
                 else
                     self.Left -= speed;
             }
             if (isRight) {
-                if(posX == 27 && posY == 14) {
+                if (posX == 27 && posY == 14) {
                     self.Left += speed;
                     if (self.Location.X >= 955)
                         self.Left = -20;
@@ -129,7 +120,7 @@ namespace Pacman {
                 if (map.ground[posY, posX + 1] == 1) {
                     if (self.Location.X <= (posX * 35 + 10) - 25)
                         self.Left += speed;
-                        return;
+                    return;
                 }
                 else
                     self.Left += speed;
@@ -142,8 +133,8 @@ namespace Pacman {
             switch (agoDir) {
                 case "U":
                     if (isLeft) {
-                        for(i = 0; i<= posY; i++) {
-                            if(map.ground[posY-i, posX-1] != 1) {
+                        for (i = 0; i <= posY; i++) {
+                            if (map.ground[posY - i, posX - 1] != 1) {
                                 savePosY = posY - i;
                                 break;
                             }
@@ -153,8 +144,8 @@ namespace Pacman {
                         isUp = true;
                     }
                     if (isRight) {
-                        for(i = 0; i<=posY; i++) {
-                            if(map.ground[posY-i, posX+1] != 1) {
+                        for (i = 0; i <= posY; i++) {
+                            if (map.ground[posY - i, posX + 1] != 1) {
                                 savePosY = posY - i;
                                 break;
                             }
@@ -167,8 +158,8 @@ namespace Pacman {
 
                 case "D":
                     if (isLeft) {
-                        for (i = 0; posY+i <= 30; i++) {
-                            if (map.ground[posY + i, posX-1] != 1) {
+                        for (i = 0; posY + i <= 30; i++) {
+                            if (map.ground[posY + i, posX - 1] != 1) {
                                 savePosY = posY + i;
                                 break;
                             }
@@ -178,8 +169,8 @@ namespace Pacman {
                         isDown = true;
                     }
                     if (isRight) {
-                        for(i = 0; posY+i <= 30; i++) {
-                            if(map.ground[posY+i, posX+1] != 1) {
+                        for (i = 0; posY + i <= 30; i++) {
+                            if (map.ground[posY + i, posX + 1] != 1) {
                                 savePosY = posY + i;
                                 break;
                             }
@@ -192,8 +183,8 @@ namespace Pacman {
 
                 case "L":
                     if (isUp) {
-                        for(i = 0; i <= posX; i++) {
-                            if(map.ground[posY-1, posX-i] != 1) {
+                        for (i = 0; i <= posX; i++) {
+                            if (map.ground[posY - 1, posX - i] != 1) {
                                 savePosX = posX - i;
                                 break;
                             }
@@ -218,7 +209,7 @@ namespace Pacman {
                 case "R":
                     if (isUp) {
                         for (i = 0; i + posX <= 27; i++) {
-                            if (map.ground[posY - 1,posX+i] != 1) {
+                            if (map.ground[posY - 1, posX + i] != 1) {
                                 savePosX = posX + i;
                                 break;
                             }
@@ -228,8 +219,8 @@ namespace Pacman {
                         isRight = true;
                     }
                     if (isDown) {
-                        for(i = 0; i + posX <= 27; i++) {
-                            if(map.ground[posY+1, posX+i] != 1) {
+                        for (i = 0; i + posX <= 27; i++) {
+                            if (map.ground[posY + 1, posX + i] != 1) {
                                 savePosX = posX + i;
                                 break;
                             }

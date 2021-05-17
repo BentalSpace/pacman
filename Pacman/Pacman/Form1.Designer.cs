@@ -3074,7 +3074,7 @@ namespace Pacman {
             // blinky
             // 
             this.blinky.BackColor = System.Drawing.Color.Red;
-            this.blinky.Location = new System.Drawing.Point(459, 432);
+            this.blinky.Location = new System.Drawing.Point(460, 431);
             this.blinky.Name = "blinky";
             this.blinky.Size = new System.Drawing.Size(58, 58);
             this.blinky.TabIndex = 5;

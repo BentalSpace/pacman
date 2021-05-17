@@ -13,6 +13,8 @@ namespace Pacman {
         string redLastDir = "L";
         string dir = "L";
 
+        public bool posChange = false;
+
         //bool isChaseScatter = false; // true일땐 추격 / false일땐 해산
 
         Panel self;
@@ -33,6 +35,7 @@ namespace Pacman {
             double y1 = self.Location.Y - 70;
             double y2 = Math.Ceiling(y1 / 35);
             int playerY = (int)y2;
+
             //유클리드 거리 계산
             if (redLastDir != "D") // 위 이동
                 if (map.groundWL[redPosY - 1, redPosX] != 1) {
@@ -82,8 +85,6 @@ namespace Pacman {
             //커브 쪽에 있을때 한번 막아야 한다. 안하면 뒤로 갈 수 있음
             switch (dir) {
                 case "U":
-                        if (red.Location.Y >= (redPosY * 35 + 70) - 23)
-                            red.Top -= speed;
                     red.Top -= speed;
                     redLastDir = "U";
                     break;
@@ -104,6 +105,34 @@ namespace Pacman {
                     break;
             }
         }
+        public void PosMove() {
+            switch (dir) {
+                case "U":
+                    if (red.Location.Y >= (redPosY * 35 + 70) - 23)
+                        red.Top -= speed;
+                    else
+                        posChange = false;
+                    break;
+                case "D":
+                    if (red.Location.Y <= (redPosY * 35 + 70) - 25)
+                        red.Top += speed;
+                    else
+                        posChange = false;
+                    break;
+                case "L":
+                    if (red.Location.X >= (redPosX * 35 + 10) - 23)
+                        red.Left -= speed;
+                    else
+                        posChange = false;
+                    break;
+                case "R":
+                    if (red.Location.X <= (redPosX * 35 + 10) - 25)
+                        red.Left += speed;
+                    else
+                        posChange = false;
+                    break;
+            }
+        }
         public void BlinkyScatter() {
             //1시
         }
@@ -111,9 +140,15 @@ namespace Pacman {
         public void PosCheak() {
             double x1 = red.Location.X - 10;
             double x2 = Math.Ceiling(x1 / 35);
+            if (redPosX != (int)x2)
+                posChange = true;
+                //redPosX > (int)x2 ? !posChangeL : !posChangeR;
             redPosX = (int)x2;
             double y1 = red.Location.Y - 70;
             double y2 = Math.Ceiling(y1 / 35);
+            if (redPosY != (int)y2)
+                posChange = true;
+                //redPosY > (int)y2 ? posChangeU = true : posChangeD = true;
             redPosY = (int)y2;
         }
         //public void ChaseScatterChange() {
