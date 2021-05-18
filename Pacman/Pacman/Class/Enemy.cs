@@ -6,6 +6,7 @@ namespace Pacman {
         int speed = 3;
         int redPosX = 13;
         int redPosY = 11;
+        int savePos = 0;
         double distanceU = 0;
         double distanceD = 0;
         double distanceL = 0;
@@ -14,6 +15,7 @@ namespace Pacman {
         string dir = "L";
 
         public bool posChange = false;
+        bool isMoving = false;
 
         //bool isChaseScatter = false; // true일땐 추격 / false일땐 해산
 
@@ -28,6 +30,11 @@ namespace Pacman {
             this.red = red;
         }
         public void BlinkyChaseCheak() {
+            if (isMoving) {
+                BlinkyChaseMove();
+                return;
+            }
+
             double min = Double.MaxValue;
             double x1 = self.Location.X - 10;
             double x2 = Math.Ceiling(x1 / 35);
@@ -43,6 +50,7 @@ namespace Pacman {
                     int y = (redPosY - 1) - playerY;
                     distanceU = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
                     min = distanceU;
+                    savePos = red.Location.Y;
                     dir = "U";
                 }
             if (redLastDir != "U") // 아래 이동
@@ -52,6 +60,7 @@ namespace Pacman {
                     distanceD = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
                     if (min > distanceD) {
                         min = distanceD;
+                        savePos = red.Location.Y;
                         dir = "D";
                     }
                 }
@@ -62,6 +71,7 @@ namespace Pacman {
                     distanceL = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
                     if (min > distanceL) {
                         min = distanceL;
+                        savePos = red.Location.X;
                         dir = "L";
                     }
                 }
@@ -71,6 +81,7 @@ namespace Pacman {
                     int y = redPosY - playerY;
                     distanceR = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
                     if (min > distanceR) {
+                        savePos = red.Location.X;
                         dir = "R";
                     }
                 }
@@ -79,29 +90,44 @@ namespace Pacman {
             distanceL = 0;
             distanceR = 0;
             // 초기화가 굳이 필요 없을지도?
+            isMoving = true;
             BlinkyChaseMove();
         }
-        public void BlinkyChaseMove() {
+        private void BlinkyChaseMove() {
             //커브 쪽에 있을때 한번 막아야 한다. 안하면 뒤로 갈 수 있음
+            // 거리 35만큼 이동 후, 다시 check
             switch (dir) {
                 case "U":
-                    red.Top -= speed;
-                    redLastDir = "U";
+                    if (savePos - 30 >= red.Location.Y)
+                        PosMove();
+                    else {
+                        red.Top -= speed;
+                        redLastDir = "U";
+                    }
                     break;
                 case "D":
-                    red.Top += speed;
-                    redLastDir = "D";
+                    if (savePos + 30 <= red.Location.Y)
+                        PosMove();
+                    else {
+                        red.Top += speed;
+                        redLastDir = "D";
+                    }
                     break;
                 case "L":
-                    red.Left -= speed;
-                    redLastDir = "L";
+                    if (savePos - 30 >= red.Location.X)
+                        PosMove();
+                    else {
+                        red.Left -= speed;
+                        redLastDir = "L";
+                    }
                     break;
                 case "R":
-                    red.Left += speed;
-                    redLastDir = "R";
-                    break;
-                default:
-                    MessageBox.Show("Test");
+                    if (savePos + 30 <= red.Location.X)
+                        PosMove();
+                    else {
+                        red.Left += speed;
+                        redLastDir = "R";
+                    }
                     break;
             }
         }
@@ -111,25 +137,29 @@ namespace Pacman {
                     if (red.Location.Y >= (redPosY * 35 + 70) - 23)
                         red.Top -= speed;
                     else
-                        posChange = false;
+                        isMoving = false;
+                        //posChange = false;
                     break;
                 case "D":
                     if (red.Location.Y <= (redPosY * 35 + 70) - 25)
                         red.Top += speed;
                     else
-                        posChange = false;
+                        isMoving = false;
+                    //posChange = false;
                     break;
                 case "L":
                     if (red.Location.X >= (redPosX * 35 + 10) - 23)
                         red.Left -= speed;
                     else
-                        posChange = false;
+                        isMoving = false;
+                    //posChange = false;
                     break;
                 case "R":
                     if (red.Location.X <= (redPosX * 35 + 10) - 25)
                         red.Left += speed;
                     else
-                        posChange = false;
+                        isMoving = false;
+                    //posChange = false;
                     break;
             }
         }
@@ -142,13 +172,12 @@ namespace Pacman {
             double x2 = Math.Ceiling(x1 / 35);
             if (redPosX != (int)x2)
                 posChange = true;
-                //redPosX > (int)x2 ? !posChangeL : !posChangeR;
             redPosX = (int)x2;
+
             double y1 = red.Location.Y - 70;
             double y2 = Math.Ceiling(y1 / 35);
             if (redPosY != (int)y2)
                 posChange = true;
-                //redPosY > (int)y2 ? posChangeU = true : posChangeD = true;
             redPosY = (int)y2;
         }
         //public void ChaseScatterChange() {
