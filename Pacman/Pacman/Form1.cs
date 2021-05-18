@@ -35,7 +35,7 @@ namespace Pacman {
             manager.GameControl();
             enemy.PosCheak();
            // if(!enemy.posChange)
-                enemy.BlinkyChaseCheak();
+                enemy.BlinkyScatter();
             //if (enemy.posChange)
             //    enemy.PosMove();
             foreach (Control x in this.Controls) {

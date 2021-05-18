@@ -3,6 +3,9 @@ using System.Windows.Forms;
 
 namespace Pacman {
     class Enemy {
+        const int scatterPosX = 21;
+        const int scatterPosY = 5;
+
         int speed = 3;
         int redPosX = 13;
         int redPosY = 11;
@@ -16,8 +19,7 @@ namespace Pacman {
 
         public bool posChange = false;
         bool isMoving = false;
-
-        //bool isChaseScatter = false; // true일땐 추격 / false일땐 해산
+        bool isChaseScatter = false; // true일땐 추격 / false일땐 해산
 
         Panel self;
         Panel red;
@@ -85,17 +87,10 @@ namespace Pacman {
                         dir = "R";
                     }
                 }
-            distanceU = 0;
-            distanceD = 0;
-            distanceL = 0;
-            distanceR = 0;
-            // 초기화가 굳이 필요 없을지도?
             isMoving = true;
             BlinkyChaseMove();
         }
         private void BlinkyChaseMove() {
-            //커브 쪽에 있을때 한번 막아야 한다. 안하면 뒤로 갈 수 있음
-            // 거리 35만큼 이동 후, 다시 check
             switch (dir) {
                 case "U":
                     if (savePos - 30 >= red.Location.Y)
@@ -164,7 +159,52 @@ namespace Pacman {
             }
         }
         public void BlinkyScatter() {
-            //1시
+            if (isMoving) {
+                BlinkyChaseMove();
+                return;
+            }
+            //1시 y축 1 - 5 / x축 21 - 26 (21,5)위치를 기준으로 잡으면 될듯
+            double min = Double.MaxValue;
+
+            if (map.groundWL[redPosY-1, redPosX] != 1) {
+                int x = redPosX - scatterPosX;
+                int y = (redPosY - 1) - scatterPosX;
+                distanceU = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                min = distanceU;
+                savePos = red.Location.Y;
+                dir = "U";
+            }
+            if(map.groundWL[redPosY+1, redPosX] != 1) {
+                int x = redPosX - scatterPosX;
+                int y = (redPosY + 1) - scatterPosY;
+                distanceD = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                if (min > distanceD) {
+                    min = distanceD;
+                    savePos = red.Location.Y;
+                    dir = "D";
+                }
+            }
+            if(map.groundWL[redPosY, redPosX - 1] != 1) {
+                int x = (redPosX + 1) - scatterPosX;
+                int y = redPosY - scatterPosY;
+                distanceL = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                if (min > distanceL) {
+                    min = distanceL;
+                    savePos = red.Location.X;
+                    dir = "L";
+                }
+            }
+            if(map.groundWL[redPosY, redPosX + 1] != 1) {
+                int x = (redPosX - 1) - scatterPosX;
+                int y = redPosY - scatterPosY;
+                distanceR = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                if (min > distanceR) {
+                    savePos = red.Location.X;
+                    dir = "R";
+                }
+            }
+            isMoving = true;
+            BlinkyChaseMove();
         }
 
         public void PosCheak() {
