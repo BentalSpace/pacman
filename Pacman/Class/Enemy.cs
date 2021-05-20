@@ -10,11 +10,12 @@ namespace Pacman {
         int redPosX = 13;
         int redPosY = 11;
         public int savePos = 0;
-        double distanceU = 0;
-        double distanceD = 0;
-        double distanceL = 0;
-        double distanceR = 0;
+        protected double distanceU = 0;
+        protected double distanceD = 0;
+        protected double distanceL = 0;
+        protected double distanceR = 0;
         string redLastDir = "L";
+       
         string dir = "L";
 
         public bool posChange = false;
@@ -33,7 +34,7 @@ namespace Pacman {
         }
         public void BlinkyChaseCheak() {
             if (isMoving) {
-                BlinkyChaseMove();
+                //BlinkyChaseMove();
                 return;
             }
 
@@ -88,79 +89,79 @@ namespace Pacman {
                     }
                 }
             isMoving = true;
-            BlinkyChaseMove();
         }
-        private void BlinkyChaseMove() {
+        protected (string, bool) EnemyMove(string dir, int savePos, Panel enemy, int posX, int posY) {
+            //string lastDir = null;
+            (string lastDir, bool isPosMove) outItem = (null, false);
             switch (dir) {
                 case "U":
-                    if (savePos - 30 >= red.Location.Y)
-                        PosMove();
+                    if (savePos - 30 >= enemy.Location.Y)
+                        outItem.isPosMove = true;
                     else {
-                        red.Top -= speed;
-                        redLastDir = "U";
+                        enemy.Top -= speed;
                     }
+                    outItem.lastDir = "U";
                     break;
                 case "D":
-                    if (savePos + 30 <= red.Location.Y)
-                        PosMove();
+                    if (savePos + 30 <= enemy.Location.Y)
+                        outItem.isPosMove = true;
                     else {
-                        red.Top += speed;
-                        redLastDir = "D";
+                        enemy.Top += speed;
                     }
+                    outItem.lastDir = "D";
                     break;
                 case "L":
-                    if (savePos - 30 >= red.Location.X)
-                        PosMove();
+                    if (savePos - 30 >= enemy.Location.X)
+                        outItem.isPosMove = true;
                     else {
-                        red.Left -= speed;
-                        redLastDir = "L";
+                        enemy.Left -= speed;
                     }
+                    outItem.lastDir = "L";
                     break;
                 case "R":
-                    if (savePos + 30 <= red.Location.X)
-                        PosMove();
+                    if (savePos + 30 <= enemy.Location.X)
+                        outItem.isPosMove = true;
                     else {
-                        red.Left += speed;
-                        redLastDir = "R";
+                        enemy.Left += speed;
                     }
+                    outItem.lastDir = "R";
                     break;
             }
+            return outItem;
         }
-        public void PosMove() {
+        protected bool PosMove(string dir, Panel enemy, int posX, int posY) {
+            bool parentIsMoving = true;
             switch (dir) {
                 case "U":
-                    if (red.Location.Y >= (redPosY * 35 + 70) - 23)
-                        red.Top -= speed;
+                    if (enemy.Location.Y >= (posY * 35 + 70) - 23)
+                        enemy.Top -= speed;
                     else
-                        isMoving = false;
-                        //posChange = false;
+                        parentIsMoving = false;
                     break;
                 case "D":
-                    if (red.Location.Y <= (redPosY * 35 + 70) - 25)
-                        red.Top += speed;
+                    if (enemy.Location.Y <= (posY * 35 + 70) - 25)
+                        enemy.Top += speed;
                     else
-                        isMoving = false;
-                    //posChange = false;
+                        parentIsMoving = false;
                     break;
                 case "L":
-                    if (red.Location.X >= (redPosX * 35 + 10) - 23)
-                        red.Left -= speed;
+                    if (enemy.Location.X >= (posX * 35 + 10) - 23)
+                        enemy.Left -= speed;
                     else
-                        isMoving = false;
-                    //posChange = false;
+                        parentIsMoving = false;
                     break;
                 case "R":
-                    if (red.Location.X <= (redPosX * 35 + 10) - 25)
-                        red.Left += speed;
+                    if (enemy.Location.X <= (posX * 35 + 10) - 25)
+                        enemy.Left += speed;
                     else
-                        isMoving = false;
-                    //posChange = false;
+                        parentIsMoving = false;
                     break;
             }
+            return parentIsMoving;
         }
         public void BlinkyScatter() {
             if (isMoving) {
-                BlinkyChaseMove();
+                //BlinkyChaseMove();
                 return;
             }
             //1시 y축 1 - 5 / x축 21 - 26 (21,5)위치를 기준으로 잡으면 될듯
@@ -204,21 +205,28 @@ namespace Pacman {
                 }
             }
             isMoving = true;
-            BlinkyChaseMove();
+            //BlinkyChaseMove();
         }
 
-        public void PosCheak() {
+        protected int PosCheckX() {
+            int posX = 0;
             double x1 = red.Location.X - 10;
             double x2 = Math.Ceiling(x1 / 35);
             if (redPosX != (int)x2)
                 posChange = true;
-            redPosX = (int)x2;
+            posX = (int)x2;
 
+            return posX;
+        }
+        protected int PosCheckY() {
+            int posY = 0;
             double y1 = red.Location.Y - 70;
             double y2 = Math.Ceiling(y1 / 35);
             if (redPosY != (int)y2)
                 posChange = true;
-            redPosY = (int)y2;
+            posY = (int)y2;
+
+            return posY;
         }
         //public void ChaseScatterChange() {
         //    switch (manager.level) {

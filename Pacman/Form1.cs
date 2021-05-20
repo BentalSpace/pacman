@@ -13,7 +13,7 @@ namespace Pacman {
         Player player;
         GameManager manager;
         Enemy enemy;
-        Enemy classBlinky;
+        Blinky classBlinky;
         
 
         public pacmanGame() {
@@ -35,11 +35,7 @@ namespace Pacman {
             player.CurveCheck();
             player.CurveMove();
             manager.GameControl();
-            enemy.PosCheak();
-           // if(!enemy.posChange)
-                enemy.BlinkyScatter();
-            //if (enemy.posChange)
-            //    enemy.PosMove();
+            classBlinky.ScatterCheck();
             foreach (Control x in this.Controls) {
                 if (x is Panel) {
                     manager.ItemEat(x);
