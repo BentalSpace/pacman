@@ -3,8 +3,8 @@ using System.Windows.Forms;
 
 namespace Pacman {
     class Blinky : Enemy {
-        int scatterPosX = 21;
-        int scatterPosY = 1;
+        int scatterPosX = 24;
+        int scatterPosY = 2;
 
         int posX = 13;
         int posY = 11;
@@ -13,7 +13,7 @@ namespace Pacman {
         (string lastDir, bool isPosMove) moveItem = ("L", false);
 
         bool isMoving = false;
-        bool isChangeFirst = false;
+        public bool isChangeFirst = false;
 
         Panel self;
         Panel blinky;
@@ -47,7 +47,7 @@ namespace Pacman {
             double y2 = Math.Ceiling(y1 / 35);
             int playerY = (int)y2;
 
-            if (moveItem.lastDir != "D") // 위 이동
+            if (moveItem.lastDir != "D" || isChangeFirst) // 위 이동
                 if (map.groundWL[posY - 1, posX] != 1) {
                     int x = posX - playerX;
                     int y = (posY - 1) - playerY;
@@ -56,7 +56,7 @@ namespace Pacman {
                     savePos = blinky.Location.Y;
                     dir = "U";
                 }
-            if (moveItem.lastDir != "U") // 아래 이동
+            if (moveItem.lastDir != "U" || isChangeFirst) // 아래 이동
                 if (map.groundWL[posY + 1, posX] != 1) {
                     int x = posX - playerX;
                     int y = (posY + 1) - playerY;
@@ -67,7 +67,7 @@ namespace Pacman {
                         dir = "D";
                     }
                 }
-            if (moveItem.lastDir != "R") // 왼쪽 이동
+            if (moveItem.lastDir != "R" || isChangeFirst) // 왼쪽 이동
                 if (map.groundWL[posY, posX - 1] != 1) {
                     int x = (posX - 1) - playerX;
                     int y = posY - playerY;
@@ -78,7 +78,7 @@ namespace Pacman {
                         dir = "L";
                     }
                 }
-            if (moveItem.lastDir != "L") // 오른쪽 이동
+            if (moveItem.lastDir != "L" || isChangeFirst) // 오른쪽 이동
                 if (map.groundWL[posY, posX + 1] != 1) {
                     int x = (posX + 1) - playerX;
                     int y = posY - playerY;
@@ -89,6 +89,7 @@ namespace Pacman {
                     }
                 }
             isMoving = true;
+            isChangeFirst = false;
             moveItem = base.EnemyMove(dir, savePos, blinky, posX, posY);
         }
 
@@ -106,16 +107,16 @@ namespace Pacman {
 
             double min = Double.MaxValue;
 
-            if (moveItem.lastDir != "D")
+            if (moveItem.lastDir != "D" || isChangeFirst)
                 if (map.groundWL[posY - 1, posX] != 1) {
                     int x = posX - scatterPosX;
-                    int y = (posY - 1) - scatterPosX;
+                    int y = (posY - 1) - scatterPosY;
                     distanceU = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
                     min = distanceU;
                     savePos = blinky.Location.Y;
                     dir = "U";
                 }
-            if (moveItem.lastDir != "U")
+            if (moveItem.lastDir != "U" || isChangeFirst)
                 if (map.groundWL[posY + 1, posX] != 1) {
                     int x = posX - scatterPosX;
                     int y = (posY + 1) - scatterPosY;
@@ -126,7 +127,7 @@ namespace Pacman {
                         dir = "D";
                     }
                 }
-            if(moveItem.lastDir != "R")
+            if(moveItem.lastDir != "R" || isChangeFirst)
                 if (map.groundWL[posY, posX - 1] != 1) {
                     int x = (posX - 1) - scatterPosX;
                     int y = posY - scatterPosY;
@@ -137,7 +138,7 @@ namespace Pacman {
                         dir = "L";
                     }
                 }
-            if(moveItem.lastDir != "L")
+            if(moveItem.lastDir != "L" || isChangeFirst)
                 if (map.groundWL[posY, posX + 1] != 1) {
                     int x = (posX + 1) - scatterPosX;
                     int y = posY - scatterPosY;
@@ -148,6 +149,7 @@ namespace Pacman {
                     }
                 }
             isMoving = true;
+            isChangeFirst = false;
             moveItem = base.EnemyMove(dir, savePos, blinky, posX, posY);
         }
     }

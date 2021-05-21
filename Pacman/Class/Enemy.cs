@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Pacman {
     class Enemy {
@@ -20,12 +21,12 @@ namespace Pacman {
 
         public bool posChange = false;
         bool isMoving = false;
-        bool isChaseScatter = false; // true일땐 추격 / false일땐 해산
+        public bool isChaseScatter = true; // true일땐 추격 / false일땐 해산
 
         Panel self;
         Panel red;
 
-        //GameManager manager = new GameManager();
+        GameManager manager = new GameManager();
         Map map = new Map();
 
         public Enemy(Panel self, Panel red) {
@@ -231,19 +232,8 @@ namespace Pacman {
         //public void ChaseScatterChange() {
         //    switch (manager.level) {
         //        case 1:
-        //            Thread.Sleep(7000);
-        //            isChaseScatter = true;
-        //            Thread.Sleep(20000);
         //            isChaseScatter = false;
-        //            Thread.Sleep(7000);
-        //            isChaseScatter = true;
-        //            Thread.Sleep(20000);
-        //            isChaseScatter = false;
-        //            Thread.Sleep(5000);
-        //            isChaseScatter = true;
-        //            Thread.Sleep(20000);
-        //            isChaseScatter = false;
-        //            Thread.Sleep(5000);
+        //            Delay(3000);
         //            isChaseScatter = true;
         //            break;
         //        case 2:
@@ -280,6 +270,18 @@ namespace Pacman {
         //            isChaseScatter = false;
         //            Thread.Sleep(10);
         //            isChaseScatter = true;
+        //            break;
+        //    }
+        //}
+        //private void Delay(int MS) {
+        //    DateTime thisMoment = DateTime.Now;
+        //    TimeSpan duration = new TimeSpan(0, 0, 0, 0, MS);
+        //    DateTime afterWards = thisMoment.Add(duration);
+        //    while (true) {
+        //        System.Windows.Forms.Application.DoEvents();
+        //        thisMoment = DateTime.Now;
+
+        //        if (afterWards <= thisMoment)
         //            break;
         //    }
         //}

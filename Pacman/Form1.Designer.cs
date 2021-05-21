@@ -330,6 +330,7 @@ namespace Pacman {
             this.pacman = new System.Windows.Forms.Panel();
             this.GameTimer = new System.Windows.Forms.Timer(this.components);
             this.blinky = new System.Windows.Forms.Panel();
+            this.ChaseScatterTimer = new System.Windows.Forms.Timer(this.components);
             this.panel95.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -3074,11 +3075,16 @@ namespace Pacman {
             // blinky
             // 
             this.blinky.BackColor = System.Drawing.Color.Red;
-            this.blinky.Location = new System.Drawing.Point(726, 751);
+            this.blinky.Location = new System.Drawing.Point(460, 431);
             this.blinky.Name = "blinky";
             this.blinky.Size = new System.Drawing.Size(58, 58);
             this.blinky.TabIndex = 5;
             this.blinky.Tag = "enemy";
+            // 
+            // ChaseScatterTimer
+            // 
+            this.ChaseScatterTimer.Enabled = true;
+            this.ChaseScatterTimer.Tick += new System.EventHandler(this.ChaseScatterTimer_Tick);
             // 
             // pacmanGame
             // 
@@ -3705,6 +3711,7 @@ namespace Pacman {
         private System.Windows.Forms.Timer GameTimer;
         private System.Windows.Forms.Panel panel300;
         private System.Windows.Forms.Panel blinky;
+        private System.Windows.Forms.Timer ChaseScatterTimer;
     }
 }
 

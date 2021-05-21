@@ -14,6 +14,7 @@ namespace Pacman {
 
         bool gameClear = false;
 
+        //pacmanGame main = new pacmanGame();
         Player player = new Player();
         Label score;
         Panel self;
@@ -43,7 +44,7 @@ namespace Pacman {
                 }
         }
         public void GameControl() { // 아이템 총 갯수 244
-            if (eatItem == 244) {
+            if (eatItem == 244) { // 블링키 처음위치 (460,431)
                 self.Left = 460;
                 self.Top = 851;
                 player.DirClear();
