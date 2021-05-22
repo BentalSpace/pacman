@@ -21,6 +21,8 @@ namespace Pacman {
             { 5000,20000,5000,20000,5000,1037140,10 }
         };
         public int delayIndex = 0;
+
+        bool isFirst = true;
         
 
         public pacmanGame() {
@@ -61,7 +63,9 @@ namespace Pacman {
             switch (manager.level) {
                 case 1:
                     enemy.isChaseScatter = !enemy.isChaseScatter;
-                    classBlinky.isChangeFirst = true;
+                    if(!isFirst)
+                        classBlinky.isChangeFirst = true;
+                    isFirst = false;
                     ChaseScatterTimer.Interval = delayIndex >= 7 ? 999999999 : delayTimer[0, delayIndex++];
                     break;
                 case 2:

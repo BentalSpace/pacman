@@ -12,10 +12,10 @@ namespace Pacman {
         int savePosY = -1;
 
         public bool isCurveMove = false;
-        bool isLeft = false;
-        bool isRight = false;
-        bool isUp = false;
-        bool isDown = false;
+        public bool isLeft = false;
+        public bool isRight = false;
+        public bool isUp = false;
+        public bool isDown = false;
         bool isInput = false;
 
         Panel self;
@@ -35,6 +35,26 @@ namespace Pacman {
             isRight = false;
             isUp = false;
             isDown = false;
+        }
+
+        public int PosReturnX() {
+            return posX;
+        }
+        public int PosReturnY() {
+            return posY;
+        }
+
+        public bool DirReturnU() {
+            return isUp ? true : false;
+        }
+        public bool DirReturnD() {
+            return isDown ? true : false;
+        }
+        public bool DirReturnL() {
+            return isLeft ? true : false;
+        }
+        public bool DirReturnR() {
+            return isRight ? true : false;
         }
         public void PlayerMoveDirSet(KeyEventArgs e) {
             if (isUp)

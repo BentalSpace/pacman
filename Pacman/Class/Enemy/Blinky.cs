@@ -36,7 +36,6 @@ namespace Pacman {
                 }
                 return;
             }
-
             double min = Double.MaxValue;
 
             //플레이어 위치 확인
@@ -56,6 +55,17 @@ namespace Pacman {
                     savePos = blinky.Location.Y;
                     dir = "U";
                 }
+            if (moveItem.lastDir != "L" || isChangeFirst) // 오른쪽 이동
+                if (map.groundWL[posY, posX + 1] != 1) {
+                    int x = (posX + 1) - playerX;
+                    int y = posY - playerY;
+                    distanceR = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                    if (min > distanceR) {
+                        min = distanceR;
+                        savePos = blinky.Location.X;
+                        dir = "R";
+                    }
+                }
             if (moveItem.lastDir != "U" || isChangeFirst) // 아래 이동
                 if (map.groundWL[posY + 1, posX] != 1) {
                     int x = posX - playerX;
@@ -73,19 +83,8 @@ namespace Pacman {
                     int y = posY - playerY;
                     distanceL = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
                     if (min > distanceL) {
-                        min = distanceL;
                         savePos = blinky.Location.X;
                         dir = "L";
-                    }
-                }
-            if (moveItem.lastDir != "L" || isChangeFirst) // 오른쪽 이동
-                if (map.groundWL[posY, posX + 1] != 1) {
-                    int x = (posX + 1) - playerX;
-                    int y = posY - playerY;
-                    distanceR = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
-                    if (min > distanceR) {
-                        savePos = blinky.Location.X;
-                        dir = "R";
                     }
                 }
             isMoving = true;
@@ -127,7 +126,7 @@ namespace Pacman {
                         dir = "D";
                     }
                 }
-            if(moveItem.lastDir != "R" || isChangeFirst)
+            if (moveItem.lastDir != "R" || isChangeFirst)
                 if (map.groundWL[posY, posX - 1] != 1) {
                     int x = (posX - 1) - scatterPosX;
                     int y = posY - scatterPosY;
@@ -138,7 +137,7 @@ namespace Pacman {
                         dir = "L";
                     }
                 }
-            if(moveItem.lastDir != "L" || isChangeFirst)
+            if (moveItem.lastDir != "L" || isChangeFirst)
                 if (map.groundWL[posY, posX + 1] != 1) {
                     int x = (posX + 1) - scatterPosX;
                     int y = posY - scatterPosY;
