@@ -331,6 +331,8 @@ namespace Pacman {
             this.GameTimer = new System.Windows.Forms.Timer(this.components);
             this.blinky = new System.Windows.Forms.Panel();
             this.ChaseScatterTimer = new System.Windows.Forms.Timer(this.components);
+            this.pinky = new System.Windows.Forms.Panel();
+            this.inky = new System.Windows.Forms.Panel();
             this.panel95.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -3086,12 +3088,32 @@ namespace Pacman {
             this.ChaseScatterTimer.Enabled = true;
             this.ChaseScatterTimer.Tick += new System.EventHandler(this.ChaseScatterTimer_Tick);
             // 
+            // pinky
+            // 
+            this.pinky.BackColor = System.Drawing.Color.Pink;
+            this.pinky.Location = new System.Drawing.Point(436, 431);
+            this.pinky.Name = "pinky";
+            this.pinky.Size = new System.Drawing.Size(58, 58);
+            this.pinky.TabIndex = 6;
+            this.pinky.Tag = "enemy";
+            // 
+            // inky
+            // 
+            this.inky.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(188)))), ((int)(((byte)(155)))));
+            this.inky.Location = new System.Drawing.Point(535, 431);
+            this.inky.Name = "inky";
+            this.inky.Size = new System.Drawing.Size(58, 58);
+            this.inky.TabIndex = 6;
+            this.inky.Tag = "enemy";
+            // 
             // pacmanGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(981, 1137);
+            this.Controls.Add(this.inky);
+            this.Controls.Add(this.pinky);
             this.Controls.Add(this.blinky);
             this.Controls.Add(this.pacman);
             this.Controls.Add(this.panel299);
@@ -3712,6 +3734,8 @@ namespace Pacman {
         private System.Windows.Forms.Panel panel300;
         private System.Windows.Forms.Panel blinky;
         private System.Windows.Forms.Timer ChaseScatterTimer;
+        private System.Windows.Forms.Panel pinky;
+        private System.Windows.Forms.Panel inky;
     }
 }
 

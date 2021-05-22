@@ -13,7 +13,10 @@ namespace Pacman {
         Player player;
         GameManager manager;
         Enemy enemy;
+
         Blinky classBlinky;
+        Pinky classPinky;
+        Inky classInky;
 
         int[,] delayTimer = new int[,] {
             { 7000,20000,7000,20000,5000,20000,5000 },
@@ -31,6 +34,8 @@ namespace Pacman {
             manager = new GameManager(pacman, lblScore);
             enemy = new Enemy(pacman, blinky);
             classBlinky = new Blinky(pacman, blinky);
+            classPinky = new Pinky(pacman, pinky);
+            classInky = new Inky(pacman, inky);
         }
 
         private void pacmanGame_KeyDown(object sender, KeyEventArgs e) {
@@ -44,11 +49,16 @@ namespace Pacman {
             player.CurveCheck();
             player.CurveMove();
             manager.GameControl();
+
+            classInky.ScatterCheck();
+            classPinky.PlayerMoveCheck();
             if (enemy.isChaseScatter) {
                 classBlinky.ChaseCheck();
+                classPinky.ChaseCheck();
             }
             else if (!enemy.isChaseScatter) {
                 classBlinky.ScatterCheck();
+                classPinky.ScatterCheck();
             }
             foreach (Control x in this.Controls) {
                 if (x is Panel) {
@@ -57,7 +67,6 @@ namespace Pacman {
                 }
             }
             manager.GameReStart();
-            //enemy.ChaseScatterChange();
         }
         private void ChaseScatterTimer_Tick(object sender, EventArgs e) {
             switch (manager.level) {

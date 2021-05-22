@@ -59,7 +59,8 @@
     <Compile Include="Class\GameManager.cs" />
     <Compile Include="Class\Map.cs" />
     <Compile Include="Class\Player.cs" />
-    <Compile Include="Pinky.cs" />
+    <Compile Include="Class\Enemy\Pinky.cs" />
+    <Compile Include="Inky.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

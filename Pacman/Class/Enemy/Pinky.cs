@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Pacman {
     class Pinky : Enemy {
-        int scatterPosX = 24;
+        int scatterPosX = 2;
         int scatterPosY = 2;
 
         int playerAgoX = 0;
@@ -21,7 +21,7 @@ namespace Pacman {
         public bool isChangeFirst = false;
         bool isUp = false;
         bool isDown = false;
-        bool isLeft = false;
+        bool isLeft = true;
         bool isRight = false;
 
         Panel self;
@@ -77,7 +77,6 @@ namespace Pacman {
                 }
                 return;
             }
-
             double min = Double.MaxValue;
 
             if (moveItem.lastDir != "D" || isChangeFirst) // 위 이동
@@ -167,12 +166,86 @@ namespace Pacman {
                         x = (posX - 1) - playerX;
                         y = posY - (playerY - 4);
                     }
+                    if (isDown) {
+                        x = (posX - 1) - playerX;
+                        y = posY - (playerY + 4);
+                    }
+                    if (isLeft) {
+                        x = (posX - 1) - (playerX - 4);
+                        y = posY - playerY;
+                    }
+                    if (isRight) {
+                        x = (posX - 1) - (playerX + 4);
+                        y = posY - playerY;
+                    }
                     distanceL = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
                     if (min > distanceL) {
-                        savePos = blinky.Location.X;
+                        savePos = pinky.Location.X;
                         dir = "L";
                     }
                 }
+            isMoving = true;
+            isChangeFirst = false;
+            moveItem = base.EnemyMove(dir, savePos, pinky, posX, posY);
+        }
+        public void ScatterCheck() {
+            posX = base.PosCheckX();
+            posY = base.PosCheckY();
+
+            if (isMoving) {
+                moveItem = base.EnemyMove(dir, savePos, pinky, posX, posY);
+                if (moveItem.isPosMove) {
+                    isMoving = base.PosMove(dir, pinky, posX, posY);
+                }
+                return;
+            }
+
+            double min = Double.MaxValue;
+
+            if (moveItem.lastDir != "D" || isChangeFirst)
+                if (map.groundWL[posY - 1, posX] != 1) {
+                    int x = posX - scatterPosX;
+                    int y = (posY - 1) - scatterPosY;
+                    distanceU = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                    min = distanceU;
+                    savePos = pinky.Location.Y;
+                    dir = "U";
+                }
+            if (moveItem.lastDir != "U" || isChangeFirst)
+                if (map.groundWL[posY + 1, posX] != 1) {
+                    int x = posX - scatterPosX;
+                    int y = (posY + 1) - scatterPosY;
+                    distanceD = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                    if (min > distanceD) {
+                        min = distanceD;
+                        savePos = pinky.Location.Y;
+                        dir = "D";
+                    }
+                }
+            if (moveItem.lastDir != "R" || isChangeFirst)
+                if (map.groundWL[posY, posX - 1] != 1) {
+                    int x = (posX - 1) - scatterPosX;
+                    int y = posY - scatterPosY;
+                    distanceL = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                    if (min > distanceL) {
+                        min = distanceL;
+                        savePos = pinky.Location.X;
+                        dir = "L";
+                    }
+                }
+            if (moveItem.lastDir != "L" || isChangeFirst)
+                if (map.groundWL[posY, posX + 1] != 1) {
+                    int x = (posX + 1) - scatterPosX;
+                    int y = posY - scatterPosY;
+                    distanceR = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                    if (min > distanceR) {
+                        savePos = pinky.Location.X;
+                        dir = "R";
+                    }
+                }
+            isMoving = true;
+            isChangeFirst = false;
+            moveItem = base.EnemyMove(dir, savePos, pinky, posX, posY);
         }
     }
 }
