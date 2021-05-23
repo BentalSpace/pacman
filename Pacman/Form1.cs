@@ -17,6 +17,7 @@ namespace Pacman {
         Blinky classBlinky;
         Pinky classPinky;
         Inky classInky;
+        Clyde classClyde;
 
         int[,] delayTimer = new int[,] {
             { 7000,20000,7000,20000,5000,20000,5000 },
@@ -36,6 +37,7 @@ namespace Pacman {
             classBlinky = new Blinky(pacman, blinky);
             classPinky = new Pinky(pacman, pinky);
             classInky = new Inky(pacman, inky);
+            classClyde = new Clyde(pacman, clyde);
         }
 
         private void pacmanGame_KeyDown(object sender, KeyEventArgs e) {
@@ -51,6 +53,7 @@ namespace Pacman {
             manager.GameControl();
 
             classInky.ScatterCheck();
+            classClyde.ScatterCheck();
             classPinky.PlayerMoveCheck();
             if (enemy.isChaseScatter) {
                 classBlinky.ChaseCheck();

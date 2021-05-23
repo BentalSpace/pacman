@@ -333,6 +333,7 @@ namespace Pacman {
             this.ChaseScatterTimer = new System.Windows.Forms.Timer(this.components);
             this.pinky = new System.Windows.Forms.Panel();
             this.inky = new System.Windows.Forms.Panel();
+            this.clyde = new System.Windows.Forms.Panel();
             this.panel95.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -3106,12 +3107,22 @@ namespace Pacman {
             this.inky.TabIndex = 6;
             this.inky.Tag = "enemy";
             // 
+            // clyde
+            // 
+            this.clyde.BackColor = System.Drawing.Color.Orange;
+            this.clyde.Location = new System.Drawing.Point(557, 431);
+            this.clyde.Name = "clyde";
+            this.clyde.Size = new System.Drawing.Size(58, 58);
+            this.clyde.TabIndex = 7;
+            this.clyde.Tag = "enemy";
+            // 
             // pacmanGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(981, 1137);
+            this.Controls.Add(this.clyde);
             this.Controls.Add(this.inky);
             this.Controls.Add(this.pinky);
             this.Controls.Add(this.blinky);
@@ -3736,6 +3747,7 @@ namespace Pacman {
         private System.Windows.Forms.Timer ChaseScatterTimer;
         private System.Windows.Forms.Panel pinky;
         private System.Windows.Forms.Panel inky;
+        private System.Windows.Forms.Panel clyde;
     }
 }
 
