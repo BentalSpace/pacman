@@ -70,6 +70,7 @@ namespace Pacman {
                 }
             }
             manager.GameReStart();
+            Invalidate();
         }
         private void ChaseScatterTimer_Tick(object sender, EventArgs e) {
             switch (manager.level) {
@@ -87,6 +88,10 @@ namespace Pacman {
                 case 5:
                     break;
             }
+        }
+
+        private void pacmanGame_Paint(object sender, PaintEventArgs e) {
+            player.playerDraw(e.Graphics);
         }
     }
 }

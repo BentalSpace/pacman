@@ -3430,6 +3430,7 @@ namespace Pacman {
             this.Controls.Add(this.panel1);
             this.Name = "pacmanGame";
             this.Text = "Pacman";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.pacmanGame_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.pacmanGame_KeyDown);
             this.panel95.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Pacman {
     class Player {
@@ -340,30 +341,10 @@ namespace Pacman {
             else
                 return;
         }
-        //public void HitboxMove() {
-        //    switch (newDir) {
-        //        case "U":
-        //            hitbox.Top -= 3;
-        //            break;
-        //        case "D":
-        //            hitbox.Top += 3;
-        //            break;
-        //        case "L":
-        //            hitbox.Left -= 3;
-        //            break;
-        //        case "R":
-        //            hitbox.Left += 3;
-        //            break;
-        //        }
-        //        //isInput = false;
-        //        savePoint.Add(hitbox);
-        //        hitbox.Location = self.Location;
-        //}
-        //public void PlayerBlock(Control x) {
-        //    if((string)x.Tag == "wall") {
-        //        if (hitbox.Bounds.IntersectsWith(x.Bounds)) { }
-        //            //멈추는 로직
-        //    }
-        //}
+        public void playerDraw(Graphics g) {
+            Image imagePlayer = Image.FromFile("G:\\Git\\pacman\\images\\pacman.png");
+            
+            g.DrawImage(imagePlayer, (posX * 35 + 10), (posY * 35 + 45));
+        }
     }
 }
