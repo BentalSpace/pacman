@@ -344,7 +344,7 @@ namespace Pacman {
         public void playerDraw(Graphics g) {
             Image imagePlayer = Image.FromFile("G:\\Git\\pacman\\images\\pacman.png");
             
-            g.DrawImage(imagePlayer, (posX * 35 + 10), (posY * 35 + 45));
+            g.DrawImage(imagePlayer, (posX * 35 - 5), (posY * 35 + 45)); // 35씩 더할때까지, 같은방향으로 움직이면 됨.
         }
     }
 }
