@@ -7,26 +7,26 @@ namespace Pacman {
         int speed = 3;
         string newDir = null;
         string agoDir = null;
-        public int posX = 13;
-        public int posY = 23;
+        int posX = 13;
+        int posY = 23;
         int savePosX = -1;
         int savePosY = -1;
+        int moveX = 0; // 34까지 올라가야 함.
+        int moveY = 0; // 34까지 올라가야 함.
 
         public bool isCurveMove = false;
-        public bool isLeft = false;
-        public bool isRight = false;
-        public bool isUp = false;
-        public bool isDown = false;
+        bool isLeft = true;
+        bool isRight = false;
+        bool isUp = false;
+        bool isDown = false;
         bool isInput = false;
 
         Panel self;
-        Panel red;
 
         Map map = new Map();
 
-        public Player(Panel self, Panel red) {
+        public Player(Panel self) {
             this.self = self;
-            this.red = red;
         }
         public Player() {
 
@@ -36,26 +36,6 @@ namespace Pacman {
             isRight = false;
             isUp = false;
             isDown = false;
-        }
-
-        public int PosReturnX() {
-            return posX;
-        }
-        public int PosReturnY() {
-            return posY;
-        }
-
-        public bool DirReturnU() {
-            return isUp ? true : false;
-        }
-        public bool DirReturnD() {
-            return isDown ? true : false;
-        }
-        public bool DirReturnL() {
-            return isLeft ? true : false;
-        }
-        public bool DirReturnR() {
-            return isRight ? true : false;
         }
         public void PlayerMoveDirSet(KeyEventArgs e) {
             if (isUp)
@@ -100,21 +80,35 @@ namespace Pacman {
         public void PlayerMove() {
             if (isUp) {
                 if (map.ground[posY - 1, posX] == 1) {
-                    if (self.Location.Y >= (posY * 35 + 70) - 23)
-                        self.Top -= speed;
-                    return;
+                    moveY -= speed;
+                    if(moveY <= -35) {
+                        moveY = 0;
+                        posY--;
+                    }
                 }
-                else
-                    self.Top -= speed;
+                else {
+                    moveY -= speed;
+                    if (moveY <= -35) {
+                        moveY = 0;
+                        posY--;
+                    }
+                }
             }
             if (isDown) {
                 if (map.ground[posY + 1, posX] == 1) {
-                    if (self.Location.Y <= (posY * 35 + 70) - 25)
-                        self.Top += speed;
-                    return;
+                    moveY += speed;
+                    if(moveY >= 35) {
+                        moveY = 0;
+                        posY++;
+                    }
                 }
-                else
-                    self.Top += speed;
+                else {
+                    moveY += speed;
+                    if (moveY >= 35) {
+                        moveY = 0;
+                        posY++;
+                    }
+                }
             }
             if (isLeft) {
                 if (posX == 0 && posY == 14) {
@@ -124,12 +118,13 @@ namespace Pacman {
                     return;
                 }
                 if (map.ground[posY, posX - 1] == 1) {
-                    if (self.Location.X >= (posX * 35 + 10) - 23)
-                        self.Left -= speed;
                     return;
                 }
-                else
-                    self.Left -= speed;
+                moveX -= speed;
+                if(moveX <= -35) {
+                    moveX = 0;
+                    posX--;
+                }
             }
             if (isRight) {
                 if (posX == 27 && posY == 14) {
@@ -139,12 +134,13 @@ namespace Pacman {
                     return;
                 }
                 if (map.ground[posY, posX + 1] == 1) {
-                    if (self.Location.X <= (posX * 35 + 10) - 25)
-                        self.Left += speed;
                     return;
                 }
-                else
-                    self.Left += speed;
+                moveX += speed;
+                if(moveX >= 35) {
+                    moveX = 0;
+                    posX++;
+                }
             }
         }
         public void CurveCheck() { // 커브를 찾는 함수
@@ -258,8 +254,12 @@ namespace Pacman {
                 isCurveMove = true;
                 switch (agoDir) {
                     case "U":
-                        if (self.Location.Y >= (posY * 35 + 70) - 23)
-                            self.Top -= speed;
+                        //if (self.Location.Y >= (posY * 35 + 70) - 23)
+                        moveY -= speed;
+                        if (moveY <= -35) {
+                            moveY = 0;
+                            posY--;
+                        }
                         else {
                             isCurveMove = false;
                             DirClear();
@@ -278,8 +278,12 @@ namespace Pacman {
                         break;
 
                     case "D":
-                        if (self.Location.Y <= (posY * 35 + 70) - 25)
-                            self.Top += speed;
+                        //if (self.Location.Y <= (posY * 35 + 70) - 25)
+                        moveY += speed;
+                        if (moveY >= 35) {
+                            moveY = 0;
+                            posY++;
+                        }
                         else {
                             isCurveMove = false;
                             DirClear();
@@ -298,8 +302,12 @@ namespace Pacman {
                         break;
 
                     case "L":
-                        if (self.Location.X >= (posX * 35 + 10) - 23)
-                            self.Left -= speed;
+                        //if (self.Location.X >= (posX * 35 + 10) - 23)
+                        moveX -= speed;
+                        if (moveX <= -35) {
+                            moveX = 0;
+                            posX--;
+                        }
                         else {
                             isCurveMove = false;
                             DirClear();
@@ -318,8 +326,12 @@ namespace Pacman {
                         break;
 
                     case "R":
-                        if (self.Location.X <= (posX * 35 + 10) - 25)
-                            self.Left += speed;
+                        //if (self.Location.X <= (posX * 35 + 10) - 25)
+                        moveX += speed;
+                        if (moveX >= 35) {
+                            moveX = 0;
+                            posX++;
+                        }
                         else {
                             isCurveMove = false;
                             DirClear();
@@ -341,10 +353,18 @@ namespace Pacman {
             else
                 return;
         }
+        int i = 1;
+        int count = 0;
         public void playerDraw(Graphics g) {
-            Image imagePlayer = Image.FromFile("G:\\Git\\pacman\\images\\pacman.png");
+            count++;
+            Image imagePlayer = Image.FromFile("G:\\Git\\pacman\\images\\pacmanR " + i + ".png");
             
-            g.DrawImage(imagePlayer, (posX * 35 - 5), (posY * 35 + 45)); // 35씩 더할때까지, 같은방향으로 움직이면 됨.
+            if(count == 8) {
+                i = i + 1 == 4 ? 2 : i + 1;
+                count = 0;
+            }
+            
+            g.DrawImage(imagePlayer, (posX * 35 - 10 + moveX), (posY * 35 + 45 + moveY)); // 35씩 더할때까지, 같은방향으로 움직이면 됨.
         }
     }
 }

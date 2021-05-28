@@ -31,7 +31,7 @@ namespace Pacman {
 
         public pacmanGame() {
             InitializeComponent();
-            player = new Player(pacman, blinky);
+            player = new Player(pacman);
             manager = new GameManager(pacman, lblScore);
             enemy = new Enemy(pacman, blinky);
             classBlinky = new Blinky(pacman, blinky);
@@ -45,10 +45,10 @@ namespace Pacman {
         }
 
         private void GameTimer_Tick(object sender, EventArgs e) {
-            player.PosCheak();
-            if(!player.isCurveMove)
-                player.PlayerMove();
+            //player.PosCheak();
             player.CurveCheck();
+            if (!player.isCurveMove)
+                player.PlayerMove();
             player.CurveMove();
             manager.GameControl();
 
