@@ -12,7 +12,6 @@ namespace Pacman {
     public partial class pacmanGame : Form {
         Player player;
         GameManager manager;
-        Enemy enemy;
 
         Blinky classBlinky;
         Pinky classPinky;
@@ -33,7 +32,6 @@ namespace Pacman {
             InitializeComponent();
             player = new Player(pacman);
             manager = new GameManager(pacman, lblScore);
-            enemy = new Enemy(pacman, blinky);
             classBlinky = new Blinky(pacman, blinky);
             classPinky = new Pinky(pacman, pinky);
             classInky = new Inky(pacman, inky);
@@ -54,15 +52,14 @@ namespace Pacman {
 
             classInky.ScatterCheck();
             classClyde.ScatterCheck();
+
             classPinky.PlayerMoveCheck();
-            if (enemy.isChaseScatter) {
-                classBlinky.ChaseCheck();
-                classPinky.ChaseCheck();
-            }
-            else if (!enemy.isChaseScatter) {
-                classBlinky.ScatterCheck();
-                classPinky.ScatterCheck();
-            }
+
+            classBlinky.ChaseCheck();
+            classPinky.ChaseCheck();
+
+            //classBlinky.ScatterCheck();
+            //classPinky.ScatterCheck();
             foreach (Control x in this.Controls) {
                 if (x is Panel) {
                     manager.ItemEat(x);
@@ -73,25 +70,26 @@ namespace Pacman {
             Invalidate();
         }
         private void ChaseScatterTimer_Tick(object sender, EventArgs e) {
-            switch (manager.level) {
-                case 1:
-                    enemy.isChaseScatter = !enemy.isChaseScatter;
-                    if(!isFirst)
-                        classBlinky.isChangeFirst = true;
-                    isFirst = false;
-                    ChaseScatterTimer.Interval = delayIndex >= 7 ? 999999999 : delayTimer[0, delayIndex++];
-                    break;
-                case 2:
-                case 3:
-                case 4:
-                    break;
-                case 5:
-                    break;
-            }
+            //switch (manager.level) {
+            //    case 1:
+            //        enemy.isChaseScatter = !enemy.isChaseScatter;
+            //        if(!isFirst)
+            //            classBlinky.isChangeFirst = true;
+            //        isFirst = false;
+            //        ChaseScatterTimer.Interval = delayIndex >= 7 ? 999999999 : delayTimer[0, delayIndex++];
+            //        break;
+            //    case 2:
+            //    case 3:
+            //    case 4:
+            //        break;
+            //    case 5:
+            //        break;
+            //}
         }
 
         private void pacmanGame_Paint(object sender, PaintEventArgs e) {
             player.playerDraw(e.Graphics);
+            classBlinky.enemyDraw(e.Graphics);
         }
     }
 }

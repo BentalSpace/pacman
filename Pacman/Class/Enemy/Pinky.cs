@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Pacman {
     class Pinky : Enemy {
@@ -246,6 +247,10 @@ namespace Pacman {
             isMoving = true;
             isChangeFirst = false;
             moveItem = base.EnemyMove(dir, savePos, pinky, posX, posY);
+        }
+
+        public override void enemyDraw(Graphics g) {
+            
         }
     }
 }

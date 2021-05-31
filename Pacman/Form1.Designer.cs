@@ -3428,6 +3428,7 @@ namespace Pacman {
             this.Controls.Add(this.panel205);
             this.Controls.Add(this.panel198);
             this.Controls.Add(this.panel1);
+            this.DoubleBuffered = true;
             this.Name = "pacmanGame";
             this.Text = "Pacman";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.pacmanGame_Paint);

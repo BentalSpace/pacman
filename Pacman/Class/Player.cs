@@ -8,7 +8,14 @@ namespace Pacman {
         string newDir = null;
         string agoDir = null;
         int posX = 13;
+
+        public int POSX {
+            get { return posX; }
+        }
         int posY = 23;
+        public int POSY {
+            get { return posY; }
+        }
         int savePosX = -1;
         int savePosY = -1;
         int moveX = 0; // 34까지 올라가야 함.
@@ -80,34 +87,22 @@ namespace Pacman {
         public void PlayerMove() {
             if (isUp) {
                 if (map.ground[posY - 1, posX] == 1) {
-                    moveY -= speed;
-                    if(moveY <= -35) {
-                        moveY = 0;
-                        posY--;
-                    }
+                    return;
                 }
-                else {
-                    moveY -= speed;
-                    if (moveY <= -35) {
-                        moveY = 0;
-                        posY--;
-                    }
+                moveY -= speed;
+                if(moveY <= -35) {
+                    moveY = 0;
+                    posY--;
                 }
             }
             if (isDown) {
                 if (map.ground[posY + 1, posX] == 1) {
-                    moveY += speed;
-                    if(moveY >= 35) {
-                        moveY = 0;
-                        posY++;
-                    }
+                    return;
                 }
-                else {
-                    moveY += speed;
-                    if (moveY >= 35) {
-                        moveY = 0;
-                        posY++;
-                    }
+                moveY += speed;
+                if(moveY >= 35) {
+                    moveY = 0;
+                    posY++;
                 }
             }
             if (isLeft) {

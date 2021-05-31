@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Pacman {
@@ -82,6 +83,9 @@ namespace Pacman {
             isMoving = true;
             isChangeFirst = false;
             moveItem = base.EnemyMove(dir, savePos, clyde, posX, posY);
+        }
+        public override void enemyDraw(Graphics g) {
+            
         }
     }
 }
