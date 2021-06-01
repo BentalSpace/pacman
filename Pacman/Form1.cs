@@ -14,9 +14,9 @@ namespace Pacman {
         GameManager manager;
 
         Blinky classBlinky;
-        //Pinky classPinky;
-        //Inky classInky;
-        //Clyde classClyde;
+        Pinky classPinky;
+        Inky classInky;
+        Clyde classClyde;
 
         int[,] delayTimer = new int[,] {
             { 7000,20000,7000,20000,5000,20000,5000 },
@@ -33,9 +33,9 @@ namespace Pacman {
             player = new Player(pacman);
             manager = new GameManager(pacman, lblScore);
             classBlinky = new Blinky(pacman, blinky);
-            //classPinky = new Pinky(pacman, pinky);
-            //classInky = new Inky(pacman, inky);
-            //classClyde = new Clyde(pacman, clyde);
+            classPinky = new Pinky(pacman, pinky);
+            classInky = new Inky(pacman, inky);
+            classClyde = new Clyde(pacman, clyde);
         }
 
         private void pacmanGame_KeyDown(object sender, KeyEventArgs e) {
@@ -50,13 +50,13 @@ namespace Pacman {
             player.CurveMove();
             manager.GameControl();
 
-            //classInky.ScatterCheck();
-            //classClyde.ScatterCheck();
+            classInky.ScatterCheck();
+            classClyde.ScatterCheck();
 
             //classPinky.PlayerMoveCheck();
 
             classBlinky.ChaseCheck();
-            //classPinky.ChaseCheck();
+            classPinky.ChaseCheck();
 
             //classBlinky.ScatterCheck();
             //classPinky.ScatterCheck();
@@ -89,7 +89,10 @@ namespace Pacman {
 
         private void pacmanGame_Paint(object sender, PaintEventArgs e) {
             player.playerDraw(e.Graphics);
-            classBlinky.enemyDraw(e.Graphics);
+            //classBlinky.enemyDraw(e.Graphics);
+            //classPinky.enemyDraw(e.Graphics);
+            //classInky.enemyDraw(e.Graphics);
+            classClyde.enemyDraw(e.Graphics);
         }
     }
 }

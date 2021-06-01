@@ -1,90 +1,79 @@
-﻿//using System;
-//using System.Drawing;
-//using System.Windows.Forms;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
 
-//namespace Pacman {
-//    class Inky : Enemy {
-//        int scatterPosX = 27;
-//        int scatterPosY = 30;
+namespace Pacman {
+    class Inky : Enemy {
+        int scatterPosX = 27;
+        int scatterPosY = 30;
 
-//        int posX = 13;
-//        int posY = 11;
-//        new int savePos = 0;
-//        string dir = "L";
-//        (string lastDir, bool isPosMove) moveItem = ("L", false);
+        string dir = "L";
+        (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 14, 11, 0, 0);
 
-//        bool isMoving = false;
-//        public bool isChangeFirst = false;
+        public bool isChangeFirst = false;
 
-//        Panel self;
-//        Panel inky;
+        Panel self;
+        Panel inky;
 
-//        Map map = new Map();
-//        public Inky(Panel self, Panel inky) : base(self, inky) {
-//            this.self = self;
-//            this.inky = inky;
-//        }
-//        public void ScatterCheck() {
-//            posX = base.PosCheckX();
-//            posY = base.PosCheckY();
+        Map map = new Map();
+        public Inky(Panel self, Panel inky) : base(self, inky) {
+            this.self = self;
+            this.inky = inky;
+        }
+        public void ScatterCheck() {
 
-//            if (isMoving) {
-//                moveItem = base.EnemyMove(dir, savePos, inky, posX, posY);
-//                if (moveItem.isPosMove) {
-//                    isMoving = base.PosMove(dir, inky, posX, posY);
-//                }
-//                return;
-//            }
+            if (moveItem.isMoving) {
+                moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
+                return;
+            }
 
-//            double min = Double.MaxValue;
+            double min = Double.MaxValue;
 
-//            if (moveItem.lastDir != "D" || isChangeFirst)
-//                if (map.groundWL[posY - 1, posX] != 1) {
-//                    int x = posX - scatterPosX;
-//                    int y = (posY - 1) - scatterPosY;
-//                    distanceU = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
-//                    min = distanceU;
-//                    savePos = inky.Location.Y;
-//                    dir = "U";
-//                }
-//            if (moveItem.lastDir != "U" || isChangeFirst)
-//                if (map.groundWL[posY + 1, posX] != 1) {
-//                    int x = posX - scatterPosX;
-//                    int y = (posY + 1) - scatterPosY;
-//                    distanceD = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
-//                    if (min > distanceD) {
-//                        min = distanceD;
-//                        savePos = inky.Location.Y;
-//                        dir = "D";
-//                    }
-//                }
-//            if (moveItem.lastDir != "R" || isChangeFirst)
-//                if (map.groundWL[posY, posX - 1] != 1) {
-//                    int x = (posX - 1) - scatterPosX;
-//                    int y = posY - scatterPosY;
-//                    distanceL = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
-//                    if (min > distanceL) {
-//                        min = distanceL;
-//                        savePos = inky.Location.X;
-//                        dir = "L";
-//                    }
-//                }
-//            if (moveItem.lastDir != "L" || isChangeFirst)
-//                if (map.groundWL[posY, posX + 1] != 1) {
-//                    int x = (posX + 1) - scatterPosX;
-//                    int y = posY - scatterPosY;
-//                    distanceR = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
-//                    if (min > distanceR) {
-//                        savePos = inky.Location.X;
-//                        dir = "R";
-//                    }
-//                }
-//            isMoving = true;
-//            isChangeFirst = false;
-//            moveItem = base.EnemyMove(dir, savePos, inky, posX, posY);
-//        }
-//        public override void enemyDraw(Graphics g) {
-            
-//        }
-//    }
-//}
+            if (moveItem.lastDir != "D" || isChangeFirst)
+                if (map.groundWL[moveItem.posY - 1, moveItem.posX] != 1) {
+                    int x = moveItem.posX - scatterPosX;
+                    int y = (moveItem.posY - 1) - scatterPosY;
+                    distanceU = (x * x) + (y * y);
+                    min = distanceU;
+                    dir = "U";
+                }
+            if (moveItem.lastDir != "U" || isChangeFirst)
+                if (map.groundWL[moveItem.posY + 1, moveItem.posX] != 1) {
+                    int x = moveItem.posX - scatterPosX;
+                    int y = (moveItem.posY + 1) - scatterPosY;
+                    distanceD = (x * x) + (y * y);
+                    if (min > distanceD) {
+                        min = distanceD;
+                        dir = "D";
+                    }
+                }
+            if (moveItem.lastDir != "R" || isChangeFirst)
+                if (map.groundWL[moveItem.posY, moveItem.posX - 1] != 1) {
+                    int x = (moveItem.posX - 1) - scatterPosX;
+                    int y = moveItem.posY - scatterPosY;
+                    distanceL = (x * x) + (y * y);
+                    if (min > distanceL) {
+                        min = distanceL;
+                        dir = "L";
+                    }
+                }
+            if (moveItem.lastDir != "L" || isChangeFirst)
+                if (map.groundWL[moveItem.posY, moveItem.posX + 1] != 1) {
+                    int x = (moveItem.posX + 1) - scatterPosX;
+                    int y = moveItem.posY - scatterPosY;
+                    distanceR = (x * x) + (y * y);
+                    if (min > distanceR) {
+                        dir = "R";
+                    }
+                }
+            moveItem.isMoving = true;
+            isChangeFirst = false;
+            moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
+        }
+        public override void enemyDraw(Graphics g) {
+            Image imageInky = Image.FromFile("G:\\Git\\pacman\\images\\inkyR " + 1 + ".png");
+
+            g.DrawImage(imageInky, moveItem.posX * 35 - 10 + moveItem.moveX, moveItem.posY * 35 + 45 + moveItem.moveY);
+        }
+    }
+}
