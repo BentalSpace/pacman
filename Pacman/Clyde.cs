@@ -7,21 +7,13 @@ namespace Pacman {
         int scatterPosX = 0;
         int scatterPosY = 30;
 
-        int posX = 13;
-        int posY = 11;
-        new int savePos = 0;
         string dir = "L";
         (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 15, 11, 0, 0);
 
         public bool isChangeFirst = false;
 
-        Panel self;
-        Panel clyde;
-
         Map map = new Map();
-        public Clyde(Panel self, Panel clyde) : base(self, clyde) {
-            this.self = self;
-            this.clyde = clyde;
+        public Clyde() : base() {
         }
 
         public void ScatterCheck() {

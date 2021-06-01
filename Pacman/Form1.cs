@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Pacman {
@@ -25,17 +18,19 @@ namespace Pacman {
         };
         public int delayIndex = 0;
 
+        public (int, int) playerPosItem;
+
         bool isFirst = true;
         
 
         public pacmanGame() {
             InitializeComponent();
-            player = new Player(pacman);
+            player = new Player(lblTemp);
             manager = new GameManager(pacman, lblScore);
-            classBlinky = new Blinky(pacman, blinky);
-            classPinky = new Pinky(pacman, pinky);
-            classInky = new Inky(pacman, inky);
-            classClyde = new Clyde(pacman, clyde);
+            classBlinky = new Blinky();
+            classPinky = new Pinky(lblTemp);
+            classInky = new Inky();
+            classClyde = new Clyde();
         }
 
         private void pacmanGame_KeyDown(object sender, KeyEventArgs e) {
@@ -45,9 +40,9 @@ namespace Pacman {
         private void GameTimer_Tick(object sender, EventArgs e) {
             //player.PosCheak();
             player.CurveCheck();
-            if (!player.isCurveMove)
-                player.PlayerMove();
+            player.PlayerMove();
             player.CurveMove();
+
             manager.GameControl();
 
             classInky.ScatterCheck();
@@ -90,9 +85,9 @@ namespace Pacman {
         private void pacmanGame_Paint(object sender, PaintEventArgs e) {
             player.playerDraw(e.Graphics);
             //classBlinky.enemyDraw(e.Graphics);
-            //classPinky.enemyDraw(e.Graphics);
+            classPinky.enemyDraw(e.Graphics);
             //classInky.enemyDraw(e.Graphics);
-            classClyde.enemyDraw(e.Graphics);
+            //classClyde.enemyDraw(e.Graphics);
         }
     }
 }

@@ -329,11 +329,7 @@ namespace Pacman {
             this.panel299 = new System.Windows.Forms.Panel();
             this.pacman = new System.Windows.Forms.Panel();
             this.GameTimer = new System.Windows.Forms.Timer(this.components);
-            this.blinky = new System.Windows.Forms.Panel();
             this.ChaseScatterTimer = new System.Windows.Forms.Timer(this.components);
-            this.pinky = new System.Windows.Forms.Panel();
-            this.inky = new System.Windows.Forms.Panel();
-            this.clyde = new System.Windows.Forms.Panel();
             this.lblTemp = new System.Windows.Forms.Label();
             this.panel95.SuspendLayout();
             this.SuspendLayout();
@@ -3076,46 +3072,10 @@ namespace Pacman {
             this.GameTimer.Interval = 1;
             this.GameTimer.Tick += new System.EventHandler(this.GameTimer_Tick);
             // 
-            // blinky
-            // 
-            this.blinky.BackColor = System.Drawing.Color.Red;
-            this.blinky.Location = new System.Drawing.Point(460, 431);
-            this.blinky.Name = "blinky";
-            this.blinky.Size = new System.Drawing.Size(58, 58);
-            this.blinky.TabIndex = 5;
-            this.blinky.Tag = "enemy";
-            // 
             // ChaseScatterTimer
             // 
             this.ChaseScatterTimer.Enabled = true;
             this.ChaseScatterTimer.Tick += new System.EventHandler(this.ChaseScatterTimer_Tick);
-            // 
-            // pinky
-            // 
-            this.pinky.BackColor = System.Drawing.Color.Pink;
-            this.pinky.Location = new System.Drawing.Point(436, 431);
-            this.pinky.Name = "pinky";
-            this.pinky.Size = new System.Drawing.Size(58, 58);
-            this.pinky.TabIndex = 6;
-            this.pinky.Tag = "enemy";
-            // 
-            // inky
-            // 
-            this.inky.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(188)))), ((int)(((byte)(155)))));
-            this.inky.Location = new System.Drawing.Point(535, 431);
-            this.inky.Name = "inky";
-            this.inky.Size = new System.Drawing.Size(58, 58);
-            this.inky.TabIndex = 6;
-            this.inky.Tag = "enemy";
-            // 
-            // clyde
-            // 
-            this.clyde.BackColor = System.Drawing.Color.Orange;
-            this.clyde.Location = new System.Drawing.Point(557, 431);
-            this.clyde.Name = "clyde";
-            this.clyde.Size = new System.Drawing.Size(58, 58);
-            this.clyde.TabIndex = 7;
-            this.clyde.Tag = "enemy";
             // 
             // lblTemp
             // 
@@ -3123,7 +3083,7 @@ namespace Pacman {
             this.lblTemp.Font = new System.Drawing.Font("굴림", 15F);
             this.lblTemp.ForeColor = System.Drawing.Color.White;
             this.lblTemp.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblTemp.Location = new System.Drawing.Point(638, 31);
+            this.lblTemp.Location = new System.Drawing.Point(648, 31);
             this.lblTemp.Name = "lblTemp";
             this.lblTemp.Size = new System.Drawing.Size(49, 20);
             this.lblTemp.TabIndex = 8;
@@ -3136,10 +3096,6 @@ namespace Pacman {
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(981, 1137);
             this.Controls.Add(this.lblTemp);
-            this.Controls.Add(this.clyde);
-            this.Controls.Add(this.inky);
-            this.Controls.Add(this.pinky);
-            this.Controls.Add(this.blinky);
             this.Controls.Add(this.pacman);
             this.Controls.Add(this.panel299);
             this.Controls.Add(this.panel298);
@@ -3759,11 +3715,7 @@ namespace Pacman {
         private System.Windows.Forms.Panel pacman;
         private System.Windows.Forms.Timer GameTimer;
         private System.Windows.Forms.Panel panel300;
-        private System.Windows.Forms.Panel blinky;
         private System.Windows.Forms.Timer ChaseScatterTimer;
-        private System.Windows.Forms.Panel pinky;
-        private System.Windows.Forms.Panel inky;
-        private System.Windows.Forms.Panel clyde;
         private System.Windows.Forms.Label lblTemp;
     }
 }

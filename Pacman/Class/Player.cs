@@ -7,33 +7,34 @@ namespace Pacman {
         int speed = 3;
         string newDir = null;
         string agoDir = null;
-        int posX = 13;
-
-        public int POSX {
-            get { return posX; }
-        }
-        int posY = 23;
-        public int POSY {
-            get { return posY; }
-        }
+        public int posX {
+            get; private set;
+        } = 13;
+        public int posY {
+            get; private set;
+        } = 23;
         int savePosX = -1;
         int savePosY = -1;
         int moveX = 0; // 34까지 올라가야 함.
         int moveY = 0; // 34까지 올라가야 함.
 
-        public bool isCurveMove = false;
-        bool isLeft = true;
-        bool isRight = false;
+        bool isCurveMove = false;
+        bool isLeft = false;
+        bool isRight = true;
         bool isUp = false;
         bool isDown = false;
         bool isInput = false;
 
         Panel self;
+        Label lblPlayerPos;
 
         Map map = new Map();
 
         public Player(Panel self) {
             this.self = self;
+        }
+        public Player(Label lblPlayerPos) {
+            this.lblPlayerPos = lblPlayerPos;
         }
         public Player() {
 
@@ -76,15 +77,18 @@ namespace Pacman {
             }
             isInput = true;
         }
-        public void PosCheak() {
-            double x1 = self.Location.X - 10;
-            double x2 = Math.Ceiling(x1 / 35);
-            posX = (int)x2;
-            double y1 = self.Location.Y - 70;
-            double y2 = Math.Ceiling(y1 / 35);
-            posY = (int)y2;
-        }
+        //public void PosCheak() {
+        //    double x1 = self.Location.X - 10;
+        //    double x2 = Math.Ceiling(x1 / 35);
+        //    posX = (int)x2;
+        //    double y1 = self.Location.Y - 70;
+        //    double y2 = Math.Ceiling(y1 / 35);
+        //    posY = (int)y2;
+        //}
         public void PlayerMove() {
+            if (isCurveMove)
+                return;
+
             if (isUp) {
                 if (map.ground[posY - 1, posX] == 1) {
                     return;
@@ -137,6 +141,7 @@ namespace Pacman {
                     posX++;
                 }
             }
+            lblPlayerPos.Text = posX + "," + posY;
         }
         public void CurveCheck() { // 커브를 찾는 함수
             if (!isInput)

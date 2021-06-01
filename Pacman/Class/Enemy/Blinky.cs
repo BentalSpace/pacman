@@ -12,17 +12,12 @@ namespace Pacman {
 
         public bool isChangeFirst = false;
 
-        Panel self;
-        Panel blinky;
-
         Map map = new Map();
         Player player = new Player();
 
 
-        public Blinky(Panel self, Panel blinky)
-            : base(self, blinky) {
-            this.self = self;
-            this.blinky = blinky;
+        public Blinky()
+            : base() {
         }
         public void ChaseCheck() {
             if (moveItem.isMoving) {
@@ -38,8 +33,8 @@ namespace Pacman {
             //double y2 = Math.Ceiling(y1 / 35);
             //int playerY = (int)y2;
 
-            int playerX = player.POSX;
-            int playerY = player.POSY;
+            int playerX = player.posX;
+            int playerY = player.posY;
 
             if (moveItem.lastDir != "D" || isChangeFirst) // 위 이동
                 if (map.groundWL[moveItem.posY - 1, moveItem.posX] != 1) {

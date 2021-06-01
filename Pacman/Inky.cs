@@ -12,13 +12,8 @@ namespace Pacman {
 
         public bool isChangeFirst = false;
 
-        Panel self;
-        Panel inky;
-
         Map map = new Map();
-        public Inky(Panel self, Panel inky) : base(self, inky) {
-            this.self = self;
-            this.inky = inky;
+        public Inky() : base() {
         }
         public void ScatterCheck() {
 
