@@ -334,6 +334,7 @@ namespace Pacman {
             this.pinky = new System.Windows.Forms.Panel();
             this.inky = new System.Windows.Forms.Panel();
             this.clyde = new System.Windows.Forms.Panel();
+            this.lblTemp = new System.Windows.Forms.Label();
             this.panel95.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -3116,12 +3117,25 @@ namespace Pacman {
             this.clyde.TabIndex = 7;
             this.clyde.Tag = "enemy";
             // 
+            // lblTemp
+            // 
+            this.lblTemp.AutoSize = true;
+            this.lblTemp.Font = new System.Drawing.Font("굴림", 15F);
+            this.lblTemp.ForeColor = System.Drawing.Color.White;
+            this.lblTemp.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblTemp.Location = new System.Drawing.Point(638, 31);
+            this.lblTemp.Name = "lblTemp";
+            this.lblTemp.Size = new System.Drawing.Size(49, 20);
+            this.lblTemp.TabIndex = 8;
+            this.lblTemp.Text = "확인";
+            // 
             // pacmanGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(981, 1137);
+            this.Controls.Add(this.lblTemp);
             this.Controls.Add(this.clyde);
             this.Controls.Add(this.inky);
             this.Controls.Add(this.pinky);
@@ -3750,6 +3764,7 @@ namespace Pacman {
         private System.Windows.Forms.Panel pinky;
         private System.Windows.Forms.Panel inky;
         private System.Windows.Forms.Panel clyde;
+        private System.Windows.Forms.Label lblTemp;
     }
 }
 

@@ -7,15 +7,9 @@ namespace Pacman {
         int scatterPosX = 24;
         int scatterPosY = 2;
 
-        int posX = 13;
-        int posY = 11;
-        int moveX = 0;
-        int moveY = 0;
-        new int savePos = 0;
         string dir = "L";
-        (string lastDir, bool isPosMove) moveItem = ("L", false);
+        (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 13, 11, 0, 0);
 
-        bool isMoving = false;
         public bool isChangeFirst = false;
 
         Panel self;
@@ -31,14 +25,8 @@ namespace Pacman {
             this.blinky = blinky;
         }
         public void ChaseCheck() {
-            posX = base.PosCheckX();
-            posY = base.PosCheckY();
-
-            if (isMoving) {
-                moveItem = base.EnemyMove(dir, savePos, blinky, posX, posY);
-                if (moveItem.isPosMove) {
-                    isMoving = base.PosMove(dir, blinky, posX, posY);
-                }
+            if (moveItem.isMoving) {
+                moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
                 return;
             }
             double min = Double.MaxValue;
@@ -54,64 +42,57 @@ namespace Pacman {
             int playerY = player.POSY;
 
             if (moveItem.lastDir != "D" || isChangeFirst) // 위 이동
-                if (map.groundWL[posY - 1, posX] != 1) {
-                    int x = posX - playerX;
-                    int y = (posY - 1) - playerY;
+                if (map.groundWL[moveItem.posY - 1, moveItem.posX] != 1) {
+                    int x = moveItem.posX - playerX;
+                    int y = (moveItem.posY - 1) - playerY;
                     distanceU = (x * x) + (y * y);
                     min = distanceU;
-                    savePos = blinky.Location.Y;
                     dir = "U";
                 }
             if (moveItem.lastDir != "L" || isChangeFirst) // 오른쪽 이동
-                if (map.groundWL[posY, posX + 1] != 1) {
-                    int x = (posX + 1) - playerX;
-                    int y = posY - playerY;
+                if (map.groundWL[moveItem.posY, moveItem.posX + 1] != 1) {
+                    int x = (moveItem.posX + 1) - playerX;
+                    int y = moveItem.posY - playerY;
                     distanceR = (x * x) + (y * y);
                     if (min > distanceR) {
                         min = distanceR;
-                        savePos = blinky.Location.X;
                         dir = "R";
                     }
                 }
             if (moveItem.lastDir != "U" || isChangeFirst) // 아래 이동
-                if (map.groundWL[posY + 1, posX] != 1) {
-                    int x = posX - playerX;
-                    int y = (posY + 1) - playerY;
+                if (map.groundWL[moveItem.posY + 1, moveItem.posX] != 1) {
+                    int x = moveItem.posX - playerX;
+                    int y = (moveItem.posY + 1) - playerY;
                     distanceD = (x * x) + (y * y);
                     if (min > distanceD) {
                         min = distanceD;
-                        savePos = blinky.Location.Y;
                         dir = "D";
                     }
                 }
             if (moveItem.lastDir != "R" || isChangeFirst) // 왼쪽 이동
-                if (map.groundWL[posY, posX - 1] != 1) {
-                    int x = (posX - 1) - playerX;
-                    int y = posY - playerY;
+                if (map.groundWL[moveItem.posY, moveItem.posX - 1] != 1) {
+                    int x = (moveItem.posX - 1) - playerX;
+                    int y = moveItem.posY - playerY;
                     distanceL = (x * x) + (y * y);
                     if (min > distanceL) {
-                        savePos = blinky.Location.X;
                         dir = "L";
                     }
                 }
-            isMoving = true;
+            moveItem.isMoving = true;
             isChangeFirst = false;
-            moveItem = base.EnemyMove(dir, savePos, blinky, posX, posY);
+            moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
         }
 
         public void ScatterCheck() {
-            posX = base.PosCheckX();
-            posY = base.PosCheckY();
 
-            if (isMoving) {
-                moveItem = base.EnemyMove(dir, savePos, blinky, posX, posY);
-                if (moveItem.isPosMove) {
-                    isMoving = base.PosMove(dir, blinky, posX, posY);
-                }
+            if (moveItem.isMoving) {
+                moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
                 return;
             }
 
             double min = Double.MaxValue;
+            int posX = moveItem.posX;
+            int posY = moveItem.posY;
 
             if (moveItem.lastDir != "D" || isChangeFirst)
                 if (map.groundWL[posY - 1, posX] != 1) {
@@ -119,7 +100,6 @@ namespace Pacman {
                     int y = (posY - 1) - scatterPosY;
                     distanceU = (x * x) + (y * y);
                     min = distanceU;
-                    savePos = blinky.Location.Y;
                     dir = "U";
                 }
             if (moveItem.lastDir != "U" || isChangeFirst)
@@ -129,7 +109,6 @@ namespace Pacman {
                     distanceD = (x * x) + (y * y);
                     if (min > distanceD) {
                         min = distanceD;
-                        savePos = blinky.Location.Y;
                         dir = "D";
                     }
                 }
@@ -140,7 +119,6 @@ namespace Pacman {
                     distanceL = (x * x) + (y * y);
                     if (min > distanceL) {
                         min = distanceL;
-                        savePos = blinky.Location.X;
                         dir = "L";
                     }
                 }
@@ -150,18 +128,17 @@ namespace Pacman {
                     int y = posY - scatterPosY;
                     distanceR = (x * x) + (y * y);
                     if (min > distanceR) {
-                        savePos = blinky.Location.X;
                         dir = "R";
                     }
                 }
-            isMoving = true;
+            moveItem.isMoving = true;
             isChangeFirst = false;
-            moveItem = base.EnemyMove(dir, savePos, blinky, posX, posY);
+            moveItem = base.EnemyMove(dir, posX, posY, moveItem.moveX, moveItem.moveY);
         }
         public override void enemyDraw(Graphics g) {
             Image imageBlinky = Image.FromFile("G:\\Git\\pacman\\images\\blinkyR " + 1 + ".png");
 
-            g.DrawImage(imageBlinky, posX * 35 - 10 + moveX, posY * 35 + 45 + moveY);
+            g.DrawImage(imageBlinky, moveItem.posX * 35 - 10 + moveItem.moveX, moveItem.posY * 35 + 45 + moveItem.moveY);
         }
     }
 }

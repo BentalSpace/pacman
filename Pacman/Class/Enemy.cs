@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Pacman {
     abstract class Enemy {
@@ -27,39 +27,53 @@ namespace Pacman {
             this.self = self;
             this.enemy = enemy;
         }
-        protected (string, bool) EnemyMove(string dir, int savePos, Panel enemy, int posX, int posY) {
+        protected (string, bool, int, int, int, int) EnemyMove(string dir, int posX, int posY, int moveX, int moveY) {
             //string lastDir = null;
-            (string lastDir, bool isPosMove) outItem = (null, false);
+            (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) outItem = (null, true, posX, posY, moveX, moveY);
             switch (dir) {
                 case "U":
-                    if (savePos - 30 >= enemy.Location.Y)
-                        outItem.isPosMove = true;
+                    //if (savePos - 30 >= enemy.Location.Y) // 저장해둔 포지션에서 -30 만큼 이동 했다면
+                    if (outItem.moveY <= -35) {
+                        outItem.isMoving = false;
+                        outItem.moveY += 35;
+                        outItem.posY--;
+                    }
                     else {
-                        enemy.Top -= speed;
+                        //enemy.Top -= speed;
+                        outItem.moveY -= speed;
                     }
                     outItem.lastDir = "U";
                     break;
                 case "D":
-                    if (savePos + 30 <= enemy.Location.Y)
-                        outItem.isPosMove = true;
+                    if (outItem.moveY >= 35) {
+                        outItem.isMoving = false;
+                        outItem.moveY -= 35;
+                        outItem.posY++;
+                    }
                     else {
-                        enemy.Top += speed;
+                        outItem.moveY += speed;
                     }
                     outItem.lastDir = "D";
                     break;
                 case "L":
-                    if (savePos - 30 >= enemy.Location.X)
-                        outItem.isPosMove = true;
+                    if (outItem.moveX <= -35) {
+                        outItem.isMoving = false;
+                        outItem.moveX += 35;
+                        outItem.posX--;
+                    }
                     else {
-                        enemy.Left -= speed;
+                        outItem.moveX -= speed;
                     }
                     outItem.lastDir = "L";
                     break;
                 case "R":
-                    if (savePos + 30 <= enemy.Location.X)
-                        outItem.isPosMove = true;
+                    if (outItem.moveX >= 35) {
+                        outItem.isMoving = false;
+                        outItem.moveX -= 35;
+                        outItem.posX++;
+                    }
                     else {
-                        enemy.Left += speed;
+                        outItem.moveX += speed;
                     }
                     outItem.lastDir = "R";
                     break;
@@ -88,7 +102,7 @@ namespace Pacman {
                         parentIsMoving = false;
                     break;
                 case "R":
-                    if (enemy.Location.X <= (posX * 35 + 10) - 25)
+                    if (enemy.Location.X <= (posX * 35 + 10) - 25) // 현재 포지션은 -25의 위치
                         enemy.Left += speed;
                     else
                         parentIsMoving = false;
