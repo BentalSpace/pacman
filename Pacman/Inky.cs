@@ -15,7 +15,11 @@ namespace Pacman {
         Map map = new Map();
         public Inky() : base() {
         }
-        public void ScatterCheck() {
+
+        public override void ChaseCheck() {
+            
+        }
+        public override void ScatterCheck() {
 
             if (moveItem.isMoving) {
                 moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);

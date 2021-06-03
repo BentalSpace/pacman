@@ -19,7 +19,7 @@ namespace Pacman {
         public Blinky()
             : base() {
         }
-        public void ChaseCheck() {
+        public override void ChaseCheck() {
             if (moveItem.isMoving) {
                 moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
                 return;
@@ -78,7 +78,7 @@ namespace Pacman {
             moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
         }
 
-        public void ScatterCheck() {
+        public override void ScatterCheck() {
 
             if (moveItem.isMoving) {
                 moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);

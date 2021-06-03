@@ -100,6 +100,8 @@ namespace Pacman {
             return parentIsMoving;
         }
 
+        public abstract void ChaseCheck();
+        public abstract void ScatterCheck();
         public abstract void enemyDraw(Graphics g);
 
         //protected int PosCheckX() {

@@ -23,9 +23,9 @@ namespace Pacman {
 
         Map map = new Map();
 
-        Label temp;
-        public Pinky(Label temp) : base() {
-            this.temp = temp;
+        Label lblPlayerPos;
+        public Pinky(Label lblPlayerPos) : base() {
+            this.lblPlayerPos = lblPlayerPos;
         }
         private void DirClear() {
             isUp = false;
@@ -33,41 +33,34 @@ namespace Pacman {
             isLeft = true;
             isRight = false;
         }
-        //public void PlayerMoveCheck() {
-        //    playerAgoX = playerX;
-        //    playerAgoY = playerY;
+        public void PlayerMoveCheck() {
+            playerAgoX = playerX;
+            playerAgoY = playerY;
 
-        //    double x1 = self.Location.X - 10;
-        //    double x2 = Math.Ceiling(x1 / 35);
-        //    playerX = (int)x2;
-        //    double y1 = self.Location.Y - 70;
-        //    double y2 = Math.Ceiling(y1 / 35);
-        //    playerY = (int)y2;
-
-        //    if (playerX < playerAgoX) {
-        //        DirClear();
-        //        isLeft = true;
-        //    }
-        //    else if (playerX > playerAgoX) {
-        //        DirClear();
-        //        isRight = true;
-        //    }
-        //    else if (playerY < playerAgoY) {
-        //        DirClear();
-        //        isUp = true;
-        //    }
-        //    else if (playerY > playerAgoY) {
-        //        DirClear();
-        //        isDown = true;
-        //    }
-        //}
-        public void ChaseCheck() {
-
-            string playerTemp = temp.Text;
-            string[] playerPos = temp.Text.Split(',');
+            string playerItem = lblPlayerPos.Text;
+            string[] playerPos = lblPlayerPos.Text.Split(',');
 
             playerX = Int32.Parse(playerPos[0]);
             playerY = Int32.Parse(playerPos[1]);
+
+            if (playerX < playerAgoX) {
+                DirClear();
+                isLeft = true;
+            }
+            else if (playerX > playerAgoX) {
+                DirClear();
+                isRight = true;
+            }
+            else if (playerY < playerAgoY) {
+                DirClear();
+                isUp = true;
+            }
+            else if (playerY > playerAgoY) {
+                DirClear();
+                isDown = true;
+            }
+        }
+        public override void ChaseCheck() {
 
             if (moveItem.isMoving) {
                 moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
@@ -180,7 +173,7 @@ namespace Pacman {
             isChangeFirst = false;
             moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
         }
-        public void ScatterCheck() {
+        public override void ScatterCheck() {
 
             if (moveItem.isMoving) {
                 moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);

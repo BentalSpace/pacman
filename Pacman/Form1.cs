@@ -30,7 +30,7 @@ namespace Pacman {
             classBlinky = new Blinky();
             classPinky = new Pinky(lblTemp);
             classInky = new Inky();
-            classClyde = new Clyde();
+            classClyde = new Clyde(lblTemp);
         }
 
         private void pacmanGame_KeyDown(object sender, KeyEventArgs e) {
@@ -48,7 +48,7 @@ namespace Pacman {
             classInky.ScatterCheck();
             classClyde.ScatterCheck();
 
-            //classPinky.PlayerMoveCheck();
+            classPinky.PlayerMoveCheck();
 
             classBlinky.ChaseCheck();
             classPinky.ChaseCheck();
