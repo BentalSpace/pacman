@@ -9,12 +9,14 @@ namespace Pacman {
 
         int playerX = 13;
         int playerY = 23;
-        int[,] playerCircle;
+        int[,] playerCircleX = new int[8, 4];
+        int[,] playerCircleY = new int[8, 4];
 
         string dir = "L";
-        (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 15, 11, 0, 0);
+        (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 15, 3, 0, 0);
 
         public bool isChangeFirst = false;
+        bool isScatterMode = false;
 
         Map map = new Map();
 
@@ -29,13 +31,97 @@ namespace Pacman {
             playerY = Int32.Parse(playerPos[1]);
 
             for(int i = 0; i < 8; i++) {
-                for(int j = 0; j < 4; j++) {
-                    playerCircle[i,j] = 
+                //우 -> 하
+                playerCircleX[i, 0] = playerX + 8 - i <= 27 ? playerX + 8 - i : 27;
+                playerCircleY[i, 0] = playerY + i <= 30 ? playerY + i : 30;
+                //하 -> 좌
+                playerCircleX[i, 1] = playerX - i >= 0 ? playerX - i : 0;
+                playerCircleY[i, 1] = playerY + 8 - i <= 30 ? playerY + 8 - i : 30;
+                //좌 -> 상
+                playerCircleX[i, 2] = playerX - 8 + i >= 0 ? playerX - 8 + i : 0;
+                playerCircleY[i, 2] = playerY - i >= 0 ? playerY - i : 0;
+                //상 -> 우
+                playerCircleX[i, 3] = playerX + i <= 27 ? playerX + i : 27;
+                playerCircleY[i, 3] = playerY - 8 + i >= 0 ? playerY - 8 + i : 0;
+            }
+        }
+        int k = 0;
+        public void PacmanNearCheck() {
+            //같은 y축 있는, x축으로 비교를 해야 한다. ( 다시 짜라 )
+            for(int i = 0; i < 8; i++) {
+                if(moveItem.posX <= playerCircleX[i,0] && moveItem.posY >= playerCircleY[i, 0]) {
+                    if (k == 0)
+                        MessageBox.Show(k++ + "/" + i + "Test");
+                    isScatterMode = true;
+                    return;
                 }
+                //if(moveItem.posX <= playerCircleX[i,1] && moveItem.posY >= playerCircleY[i, 1]) {
+                //    isScatterMode = true;
+                //    return;
+                //}
+                //if(moveItem.posX <= playerCircleX[i,2] && moveItem.posY >= playerCircleY[i, 2]) {
+                //    isScatterMode = true;
+                //    return;
+                //}
+                //if(moveItem.posX >= playerCircleX[i,3] && moveItem.posY <= playerCircleY[i, 3]) {
+                //    isScatterMode = true;
+                //    return;
+                //}
             }
         }
         public override void ChaseCheck() {
-            
+            if (isScatterMode) {
+                ScatterCheck();
+                return;
+            }
+            if (moveItem.isMoving) {
+                moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
+                return;
+            }
+
+            double min = Double.MaxValue;
+            //lblPlayerPos.Text = "Test";
+
+            if (moveItem.lastDir != "D" || isChangeFirst) // 위 이동
+                if (map.groundWL[moveItem.posY - 1, moveItem.posX] != 1) {
+                    int x = moveItem.posX - playerX;
+                    int y = (moveItem.posY - 1) - playerY;
+                    distanceU = (x * x) + (y * y);
+                    min = distanceU;
+                    dir = "U";
+                }
+            if (moveItem.lastDir != "L" || isChangeFirst) // 오른쪽 이동
+                if (map.groundWL[moveItem.posY, moveItem.posX + 1] != 1) {
+                    int x = (moveItem.posX + 1) - playerX;
+                    int y = moveItem.posY - playerY;
+                    distanceR = (x * x) + (y * y);
+                    if (min > distanceR) {
+                        min = distanceR;
+                        dir = "R";
+                    }
+                }
+            if (moveItem.lastDir != "U" || isChangeFirst) // 아래 이동
+                if (map.groundWL[moveItem.posY + 1, moveItem.posX] != 1) {
+                    int x = moveItem.posX - playerX;
+                    int y = (moveItem.posY + 1) - playerY;
+                    distanceD = (x * x) + (y * y);
+                    if (min > distanceD) {
+                        min = distanceD;
+                        dir = "D";
+                    }
+                }
+            if (moveItem.lastDir != "R" || isChangeFirst) // 왼쪽 이동
+                if (map.groundWL[moveItem.posY, moveItem.posX - 1] != 1) {
+                    int x = (moveItem.posX - 1) - playerX;
+                    int y = moveItem.posY - playerY;
+                    distanceL = (x * x) + (y * y);
+                    if (min > distanceL) {
+                        dir = "L";
+                    }
+                }
+            moveItem.isMoving = true;
+            isChangeFirst = false;
+            moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
         }
         public override void ScatterCheck() {
 

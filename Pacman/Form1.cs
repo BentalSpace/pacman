@@ -46,12 +46,15 @@ namespace Pacman {
             manager.GameControl();
 
             classInky.ScatterCheck();
-            classClyde.ScatterCheck();
+            //classClyde.ScatterCheck();
 
             classPinky.PlayerMoveCheck();
+            classClyde.PlayerCircle();
+            classClyde.PacmanNearCheck();
 
             classBlinky.ChaseCheck();
             classPinky.ChaseCheck();
+            classClyde.ChaseCheck();
 
             //classBlinky.ScatterCheck();
             //classPinky.ScatterCheck();
@@ -85,9 +88,9 @@ namespace Pacman {
         private void pacmanGame_Paint(object sender, PaintEventArgs e) {
             player.playerDraw(e.Graphics);
             //classBlinky.enemyDraw(e.Graphics);
-            classPinky.enemyDraw(e.Graphics);
+            //classPinky.enemyDraw(e.Graphics);
             //classInky.enemyDraw(e.Graphics);
-            //classClyde.enemyDraw(e.Graphics);
+            classClyde.enemyDraw(e.Graphics);
         }
     }
 }
