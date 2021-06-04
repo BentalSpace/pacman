@@ -7,17 +7,34 @@ namespace Pacman {
         int scatterPosX = 27;
         int scatterPosY = 30;
 
+        int playerX = 13;
+        int playerY = 23;
+        int blinkyX = 0;
+        int blinkyY = 0;
+
         string dir = "L";
         (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 14, 11, 0, 0);
 
         public bool isChangeFirst = false;
 
         Map map = new Map();
-        public Inky() : base() {
+
+        Label lblPlayerPos;
+        Label lblBlinkyPos;
+        public Inky(Label lblPlayerPos, Label lblBlinkyPos) : base() {
+            this.lblPlayerPos = lblPlayerPos;
+            this.lblBlinkyPos = lblBlinkyPos;
         }
 
+        // 팩맨의 두칸 앞을 기준으로 블링키의 위치를 대칭시킨곳이 목표지점
         public override void ChaseCheck() {
-            
+            string[] charPos = lblPlayerPos.Text.Split(',');
+            playerX = Int32.Parse(charPos[0]);
+            playerY = Int32.Parse(charPos[1]);
+
+            charPos = lblBlinkyPos.Text.Split(',');
+            blinkyX = Int32.Parse(charPos[0]);
+            blinkyY = Int32.Parse(charPos[1]);
         }
         public override void ScatterCheck() {
 

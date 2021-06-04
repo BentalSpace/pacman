@@ -7,6 +7,9 @@ namespace Pacman {
         int scatterPosX = 24;
         int scatterPosY = 2;
 
+        int playerX = 13;
+        int playerY = 23;
+
         string dir = "L";
         (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 13, 11, 0, 0);
 
@@ -15,9 +18,12 @@ namespace Pacman {
         Map map = new Map();
         Player player = new Player();
 
-
-        public Blinky()
+        Label lblPlayerPos;
+        Label lblBlinkyPos;
+        public Blinky(Label lblPlayerPos, Label lblBlinkyPos)
             : base() {
+            this.lblPlayerPos = lblPlayerPos;
+            this.lblBlinkyPos = lblBlinkyPos;
         }
         public override void ChaseCheck() {
             if (moveItem.isMoving) {
@@ -26,15 +32,9 @@ namespace Pacman {
             }
             double min = Double.MaxValue;
             //플레이어 위치 확인
-            //double x1 = self.Location.X - 10;
-            //double x2 = Math.Ceiling(x1 / 35);
-            //int playerX = (int)x2;
-            //double y1 = self.Location.Y - 70;
-            //double y2 = Math.Ceiling(y1 / 35);
-            //int playerY = (int)y2;
-
-            int playerX = player.posX;
-            int playerY = player.posY;
+            string[] playerPos = lblPlayerPos.Text.Split(',');
+            playerX = Int32.Parse(playerPos[0]);
+            playerY = Int32.Parse(playerPos[1]);
 
             if (moveItem.lastDir != "D" || isChangeFirst) // 위 이동
                 if (map.groundWL[moveItem.posY - 1, moveItem.posX] != 1) {
@@ -73,6 +73,7 @@ namespace Pacman {
                         dir = "L";
                     }
                 }
+            lblBlinkyPos.Text = moveItem.posX + "," + moveItem.posY;
             moveItem.isMoving = true;
             isChangeFirst = false;
             moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
@@ -126,6 +127,7 @@ namespace Pacman {
                         dir = "R";
                     }
                 }
+            lblBlinkyPos.Text = moveItem.posX + "," + moveItem.posY;
             moveItem.isMoving = true;
             isChangeFirst = false;
             moveItem = base.EnemyMove(dir, posX, posY, moveItem.moveX, moveItem.moveY);

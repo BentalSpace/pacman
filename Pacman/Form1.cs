@@ -27,9 +27,9 @@ namespace Pacman {
             InitializeComponent();
             player = new Player(lblTemp);
             manager = new GameManager(pacman, lblScore);
-            classBlinky = new Blinky();
+            classBlinky = new Blinky(lblTemp, lblBlinky);
             classPinky = new Pinky(lblTemp);
-            classInky = new Inky();
+            classInky = new Inky(lblTemp, lblBlinky);
             classClyde = new Clyde(lblTemp);
         }
 

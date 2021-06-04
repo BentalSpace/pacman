@@ -331,6 +331,7 @@ namespace Pacman {
             this.GameTimer = new System.Windows.Forms.Timer(this.components);
             this.ChaseScatterTimer = new System.Windows.Forms.Timer(this.components);
             this.lblTemp = new System.Windows.Forms.Label();
+            this.lblBlinky = new System.Windows.Forms.Label();
             this.panel95.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -3089,12 +3090,24 @@ namespace Pacman {
             this.lblTemp.TabIndex = 8;
             this.lblTemp.Text = "확인";
             // 
+            // lblBlinky
+            // 
+            this.lblBlinky.AutoSize = true;
+            this.lblBlinky.ForeColor = System.Drawing.Color.White;
+            this.lblBlinky.Location = new System.Drawing.Point(752, 31);
+            this.lblBlinky.Name = "lblBlinky";
+            this.lblBlinky.Size = new System.Drawing.Size(29, 12);
+            this.lblBlinky.TabIndex = 9;
+            this.lblBlinky.Text = "확인";
+            this.lblBlinky.Visible = false;
+            // 
             // pacmanGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(981, 1137);
+            this.Controls.Add(this.lblBlinky);
             this.Controls.Add(this.lblTemp);
             this.Controls.Add(this.pacman);
             this.Controls.Add(this.panel299);
@@ -3717,6 +3730,7 @@ namespace Pacman {
         private System.Windows.Forms.Panel panel300;
         private System.Windows.Forms.Timer ChaseScatterTimer;
         private System.Windows.Forms.Label lblTemp;
+        private System.Windows.Forms.Label lblBlinky;
     }
 }
 
