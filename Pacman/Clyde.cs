@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
+//클라이드 - ScatterMode 사이클 추격으로 변경될때, 같이 바꿔줘야 함.
 namespace Pacman {
     class Clyde : Enemy {
         int scatterPosX = 0;
@@ -9,8 +10,8 @@ namespace Pacman {
 
         int playerX = 13;
         int playerY = 23;
-        int[,] playerCircleX = new int[8, 4];
-        int[,] playerCircleY = new int[8, 4];
+        int[,] playerCircleX = new int[8, 2];
+        int[,] playerCircleY = new int[8, 2];
 
         string dir = "L";
         (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 15, 3, 0, 0);
@@ -30,43 +31,33 @@ namespace Pacman {
             playerX = Int32.Parse(playerPos[0]);
             playerY = Int32.Parse(playerPos[1]);
 
-            for(int i = 0; i < 8; i++) {
-                //우 -> 하
-                playerCircleX[i, 0] = playerX + 8 - i <= 27 ? playerX + 8 - i : 27;
-                playerCircleY[i, 0] = playerY + i <= 30 ? playerY + i : 30;
-                //하 -> 좌
-                playerCircleX[i, 1] = playerX - i >= 0 ? playerX - i : 0;
-                playerCircleY[i, 1] = playerY + 8 - i <= 30 ? playerY + 8 - i : 30;
-                //좌 -> 상
-                playerCircleX[i, 2] = playerX - 8 + i >= 0 ? playerX - 8 + i : 0;
-                playerCircleY[i, 2] = playerY - i >= 0 ? playerY - i : 0;
-                //상 -> 우
-                playerCircleX[i, 3] = playerX + i <= 27 ? playerX + i : 27;
-                playerCircleY[i, 3] = playerY - 8 + i >= 0 ? playerY - 8 + i : 0;
+            for (int i = 1; i <= 8; i++) {
+                //맵의 크기에 맞게 조정
+
+                //아래쪽
+                playerCircleX[i - 1, 0] = playerX + 8 - i <= 27 ? playerX + 8 - i : 27;
+                playerCircleX[i - 1, 1] = playerX - 8 + i >= 0 ? playerX - 8 + i : 0;
+                playerCircleY[i - 1, 0] = playerY + i <= 30 ? playerY + i : 30;
+
+                //위쪽
+                playerCircleY[i - 1, 1] = playerY - i >= 0 ? playerY - i : 0;
             }
+            //가운데
+            //플레이어 y를 기준으로 x축 +8 / -8;
         }
-        int k = 0;
         public void PacmanNearCheck() {
             //같은 y축 있는, x축으로 비교를 해야 한다. ( 다시 짜라 )
-            for(int i = 0; i < 8; i++) {
-                if(moveItem.posX <= playerCircleX[i,0] && moveItem.posY >= playerCircleY[i, 0]) {
-                    if (k == 0)
-                        MessageBox.Show(k++ + "/" + i + "Test");
+            //가운데
+            if (moveItem.posX <= playerX + 8 && moveItem.posX >= playerX - 8 && moveItem.posY == playerY) {
+                isScatterMode = true;
+                return;
+            }
+            for (int i = 0; i < 8; i++) {
+                if (moveItem.posX <= playerCircleX[i, 0] && moveItem.posX >= playerCircleX[i, 1] 
+                    && (moveItem.posY == playerCircleY[i, 0] || moveItem.posY == playerCircleY[i, 1])) {
                     isScatterMode = true;
                     return;
                 }
-                //if(moveItem.posX <= playerCircleX[i,1] && moveItem.posY >= playerCircleY[i, 1]) {
-                //    isScatterMode = true;
-                //    return;
-                //}
-                //if(moveItem.posX <= playerCircleX[i,2] && moveItem.posY >= playerCircleY[i, 2]) {
-                //    isScatterMode = true;
-                //    return;
-                //}
-                //if(moveItem.posX >= playerCircleX[i,3] && moveItem.posY <= playerCircleY[i, 3]) {
-                //    isScatterMode = true;
-                //    return;
-                //}
             }
         }
         public override void ChaseCheck() {
