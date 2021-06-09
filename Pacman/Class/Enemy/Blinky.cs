@@ -12,18 +12,21 @@ namespace Pacman {
 
         string dir = "L";
         (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 13, 11, 0, 0);
+        public int PosX {
+            get { return moveItem.posX; }
+        }
+        public int PosY {
+            get { return moveItem.posY; }
+        }
 
         public bool isChangeFirst = false;
 
         Map map = new Map();
-        Player player = new Player();
+        Player player;
 
-        Label lblPlayerPos;
-        Label lblBlinkyPos;
-        public Blinky(Label lblPlayerPos, Label lblBlinkyPos)
+        public Blinky(Player player)
             : base() {
-            this.lblPlayerPos = lblPlayerPos;
-            this.lblBlinkyPos = lblBlinkyPos;
+            this.player = player;
         }
         public override void ChaseCheck() {
             if (moveItem.isMoving) {
@@ -32,9 +35,8 @@ namespace Pacman {
             }
             double min = Double.MaxValue;
             //플레이어 위치 확인
-            string[] playerPos = lblPlayerPos.Text.Split(',');
-            playerX = Int32.Parse(playerPos[0]);
-            playerY = Int32.Parse(playerPos[1]);
+            playerX = player.posX;
+            playerY = player.posY;
 
             if (moveItem.lastDir != "D" || isChangeFirst) // 위 이동
                 if (map.groundWL[moveItem.posY - 1, moveItem.posX] != 1) {
@@ -73,7 +75,6 @@ namespace Pacman {
                         dir = "L";
                     }
                 }
-            lblBlinkyPos.Text = moveItem.posX + "," + moveItem.posY;
             moveItem.isMoving = true;
             isChangeFirst = false;
             moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
@@ -127,15 +128,15 @@ namespace Pacman {
                         dir = "R";
                     }
                 }
-            lblBlinkyPos.Text = moveItem.posX + "," + moveItem.posY;
             moveItem.isMoving = true;
             isChangeFirst = false;
             moveItem = base.EnemyMove(dir, posX, posY, moveItem.moveX, moveItem.moveY);
         }
         public override void enemyDraw(Graphics g) {
-            Image imageBlinky = Image.FromFile("G:\\Git\\pacman\\images\\blinkyR " + 1 + ".png");
+            //Image imageBlinky = Image.FromFile("G:\\Git\\pacman\\images\\blinkyR " + 1 + ".png");
+            Image imageBlinky1 = Image.FromFile(Application.StartupPath + @"\images\blinkyR " + 1 + ".png");
 
-            g.DrawImage(imageBlinky, moveItem.posX * 35 - 10 + moveItem.moveX, moveItem.posY * 35 + 45 + moveItem.moveY);
+            g.DrawImage(imageBlinky1, moveItem.posX * 35 - 10 + moveItem.moveX, moveItem.posY * 35 + 45 + moveItem.moveY);
         }
     }
 }

@@ -22,26 +22,23 @@ namespace Pacman {
         bool isRight = false;
 
         Map map = new Map();
+        Player player;
 
-        Label lblPlayerPos;
-        public Pinky(Label lblPlayerPos) : base() {
-            this.lblPlayerPos = lblPlayerPos;
+        public Pinky(Player player) : base() {
+            this.player = player;
         }
         private void DirClear() {
             isUp = false;
             isDown = false;
-            isLeft = true;
+            isLeft = false;
             isRight = false;
         }
         public void PlayerMoveCheck() {
             playerAgoX = playerX;
             playerAgoY = playerY;
 
-            string playerItem = lblPlayerPos.Text;
-            string[] playerPos = lblPlayerPos.Text.Split(',');
-
-            playerX = Int32.Parse(playerPos[0]);
-            playerY = Int32.Parse(playerPos[1]);
+            playerX = player.posX;
+            playerY = player.posY;
 
             if (playerX < playerAgoX) {
                 DirClear();
@@ -225,7 +222,7 @@ namespace Pacman {
         }
 
         public override void enemyDraw(Graphics g) {
-            Image imagePinky = Image.FromFile("G:\\Git\\pacman\\images\\pinkyR " + 1 + ".png");
+            Image imagePinky = Image.FromFile(Application.StartupPath + @"\images\pinkyR " + 1 + ".png");
 
             g.DrawImage(imagePinky, moveItem.posX * 35 - 10 + moveItem.moveX, moveItem.posY * 35 + 45 + moveItem.moveY);
         }

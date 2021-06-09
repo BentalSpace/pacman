@@ -20,16 +20,15 @@ namespace Pacman {
         bool isScatterMode = false;
 
         Map map = new Map();
+        Player player;
 
-        Label lblPlayerPos;
-        public Clyde(Label lblPlayerPos) : base() {
-            this.lblPlayerPos = lblPlayerPos;
+        public Clyde(Player player) : base() {
+            this.player = player;
         }
         //팩맨반경 8칸 밖에 있으면, 팩맨의 현재 위치를 표적으로 삼지만, 8칸 안으로 들어가면, 해산모드가 된다.
         public void PlayerCircle() {
-            string[] playerPos = lblPlayerPos.Text.Split(',');
-            playerX = Int32.Parse(playerPos[0]);
-            playerY = Int32.Parse(playerPos[1]);
+            playerX = player.posX;
+            playerY = player.posY;
 
             for (int i = 1; i <= 8; i++) {
                 //맵의 크기에 맞게 조정
@@ -165,7 +164,7 @@ namespace Pacman {
             moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
         }
         public override void enemyDraw(Graphics g) {
-            Image imageClyde = Image.FromFile("G:\\Git\\pacman\\images\\clydeR " + 1 + ".png");
+            Image imageClyde = Image.FromFile(Application.StartupPath + @"\images\clydeR " + 1 + ".png");
 
             g.DrawImage(imageClyde, moveItem.posX * 35 - 10 + moveItem.moveX, moveItem.posY * 35 + 45 + moveItem.moveY);
         }

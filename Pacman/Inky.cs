@@ -9,32 +9,173 @@ namespace Pacman {
 
         int playerX = 13;
         int playerY = 23;
+        int playerAgoX = 0;
+        int playerAgoY = 0;
         int blinkyX = 0;
         int blinkyY = 0;
+        int targetPosX = 0;
+        int targetPosY = 0;
 
         string dir = "L";
         (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 14, 11, 0, 0);
 
         public bool isChangeFirst = false;
+        bool isUp = false;
+        bool isDown = false;
+        bool isLeft = true;
+        bool isRight = false;
 
         Map map = new Map();
+        Player player;
+        Blinky blinky;
 
-        Label lblPlayerPos;
-        Label lblBlinkyPos;
-        public Inky(Label lblPlayerPos, Label lblBlinkyPos) : base() {
-            this.lblPlayerPos = lblPlayerPos;
-            this.lblBlinkyPos = lblBlinkyPos;
+
+        public Inky(Player player, Blinky blinky) : base() {
+            this.player = player;
+            this.blinky = blinky;
         }
 
         // 팩맨의 두칸 앞을 기준으로 블링키의 위치를 대칭시킨곳이 목표지점
-        public override void ChaseCheck() {
-            string[] charPos = lblPlayerPos.Text.Split(',');
-            playerX = Int32.Parse(charPos[0]);
-            playerY = Int32.Parse(charPos[1]);
 
-            charPos = lblBlinkyPos.Text.Split(',');
-            blinkyX = Int32.Parse(charPos[0]);
-            blinkyY = Int32.Parse(charPos[1]);
+        private void DirClear() {
+            isUp = false;
+            isDown = false;
+            isLeft = false;
+            isRight = false;
+        }
+        public void PlayerMoveCheck() {
+            playerAgoX = playerX;
+            playerAgoY = playerY;
+
+            playerX = player.posX;
+            playerY = player.posY;
+
+            blinkyX = blinky.PosX;
+            blinkyY = blinky.PosY;
+        }
+        public override void ChaseCheck() {
+            int temp;
+            if (player.isUp) {
+                if (playerX <= blinky.PosX) { // 블링키의 위치가 더 오른쪽에 있다면
+                    temp = blinky.PosX - playerX;
+                    targetPosX = playerX - temp;
+                }
+                else if (playerX > blinky.PosX) {
+                    temp = playerX - blinky.PosX;
+                    targetPosX = playerX + temp;
+                }
+                if ((playerY - 2) <= blinky.PosY) {
+                    temp = blinky.PosY - (playerY - 2);
+                    targetPosY = (playerY - 2) - temp;
+                }
+                else if ((playerY - 2) > blinky.PosY) {
+                    temp = (playerY - 2) - blinky.PosY;
+                    targetPosY = (playerY - 2) + temp;
+                }
+            }
+            else if (player.isDown) {
+                if (playerX <= blinky.PosX) {
+                    temp = blinky.PosX - playerX;
+                    targetPosX = playerX - temp;
+                }
+                else if (playerX > blinky.PosX) {
+                    temp = playerX - blinky.PosX;
+                    targetPosX = playerX + temp;
+                }
+                if ((playerY + 2) <= blinky.PosY) {
+                    temp = blinky.PosY - (playerY + 2);
+                    targetPosY = (playerY + 2) - temp;
+                }
+                else if ((playerY + 2) > blinky.PosY) {
+                    temp = (playerY + 2) - blinky.PosY;
+                    targetPosY = (playerY + 2) + temp;
+                }
+            }
+            else if (player.isLeft) {
+                if ((playerX - 2) <= blinky.PosX) {
+                    temp = blinky.PosX - (playerX - 2);
+                    targetPosX = (playerX - 2) - temp;
+                }
+                else if ((playerX - 2) > blinky.PosX) {
+                    temp = (playerX - 2) - blinky.PosX;
+                    targetPosX = (playerX - 2) + temp;
+                }
+                if ((playerY) <= blinky.PosY) {
+                    temp = blinky.PosY - playerY;
+                    targetPosY = playerY - temp;
+                }
+                else if (playerY > blinky.PosY) {
+                    temp = playerY - blinky.PosY;
+                    targetPosY = playerY + temp;
+                }
+            }
+            else if (player.isRight) {
+                if ((playerX + 2) <= blinky.PosX) {
+                    temp = blinky.PosX - (playerX + 2);
+                    targetPosX = (playerX + 2) - temp;
+                }
+                else if ((playerX + 2) > blinky.PosX) {
+                    temp = (playerX + 2) - blinky.PosX;
+                    targetPosX = (playerX + 2) + temp;
+                }
+                if ((playerY) <= blinky.PosY) {
+                    temp = blinky.PosY - playerY;
+                    targetPosY = playerY - temp;
+                }
+                else if (playerY > blinky.PosY) {
+                    temp = playerY - blinky.PosY;
+                    targetPosY = playerY + temp;
+                }
+            }
+            // 위 타켓 포지션 체크
+            if (moveItem.isMoving) {
+                moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
+                return;
+            }
+
+            double min = Double.MaxValue;
+
+            if (moveItem.lastDir != "D" || isChangeFirst) // 위 이동
+                if (map.groundWL[moveItem.posY - 1, moveItem.posX] != 1) {
+                    int x = moveItem.posX - targetPosX;
+                    int y = (moveItem.posY - 1) - targetPosY;
+                    distanceU = (x * x) + (y * y);
+                    min = distanceU;
+                    dir = "U";
+                }
+            if (moveItem.lastDir != "L" || isChangeFirst) // 오른쪽 이동
+                if (map.groundWL[moveItem.posY, moveItem.posX + 1] != 1) {
+                    int x = (moveItem.posX + 1) - targetPosX;
+                    int y = moveItem.posY - targetPosY;
+                    distanceR = (x * x) + (y * y);
+                    if (min > distanceR) {
+                        min = distanceR;
+                        dir = "R";
+                    }
+                }
+            if (moveItem.lastDir != "U" || isChangeFirst) // 아래 이동
+                if (map.groundWL[moveItem.posY + 1, moveItem.posX] != 1) {
+                    int x = moveItem.posX - targetPosX;
+                    int y = (moveItem.posY + 1) - targetPosY;
+                    distanceD = (x * x) + (y * y);
+                    if (min > distanceD) {
+                        min = distanceD;
+                        dir = "D";
+                    }
+                }
+            if (moveItem.lastDir != "R" || isChangeFirst) // 왼쪽 이동
+                if (map.groundWL[moveItem.posY, moveItem.posX - 1] != 1) {
+                    int x = (moveItem.posX - 1) - targetPosX;
+                    int y = moveItem.posY - targetPosY;
+                    distanceL = (x * x) + (y * y);
+                    if (min > distanceL) {
+                        dir = "L";
+                    }
+                }
+
+            moveItem.isMoving = true;
+            isChangeFirst = false;
+            moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
         }
         public override void ScatterCheck() {
 
@@ -87,7 +228,7 @@ namespace Pacman {
             moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
         }
         public override void enemyDraw(Graphics g) {
-            Image imageInky = Image.FromFile("G:\\Git\\pacman\\images\\inkyR " + 1 + ".png");
+            Image imageInky = Image.FromFile(Application.StartupPath + @"\images\inkyR " + 1 + ".png");
 
             g.DrawImage(imageInky, moveItem.posX * 35 - 10 + moveItem.moveX, moveItem.posY * 35 + 45 + moveItem.moveY);
         }

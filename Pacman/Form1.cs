@@ -25,12 +25,12 @@ namespace Pacman {
 
         public pacmanGame() {
             InitializeComponent();
-            player = new Player(lblTemp);
+            player = new Player();
             manager = new GameManager(pacman, lblScore);
-            classBlinky = new Blinky(lblTemp, lblBlinky);
-            classPinky = new Pinky(lblTemp);
-            classInky = new Inky(lblTemp, lblBlinky);
-            classClyde = new Clyde(lblTemp);
+            classBlinky = new Blinky(player);
+            classPinky = new Pinky(player);
+            classInky = new Inky(player, classBlinky);
+            classClyde = new Clyde(player);
         }
 
         private void pacmanGame_KeyDown(object sender, KeyEventArgs e) {
@@ -45,16 +45,18 @@ namespace Pacman {
 
             manager.GameControl();
 
-            classInky.ScatterCheck();
+            //classInky.ScatterCheck();
             //classClyde.ScatterCheck();
 
-            classPinky.PlayerMoveCheck();
-            classClyde.PlayerCircle();
-            classClyde.PacmanNearCheck();
+            //classPinky.PlayerMoveCheck();
+            //classClyde.PlayerCircle();
+            //classClyde.PacmanNearCheck();
+            classInky.PlayerMoveCheck();
 
             classBlinky.ChaseCheck();
-            classPinky.ChaseCheck();
-            classClyde.ChaseCheck();
+            //classPinky.ChaseCheck();
+            //classClyde.ChaseCheck();
+            classInky.ChaseCheck();
 
             //classBlinky.ScatterCheck();
             //classPinky.ScatterCheck();
@@ -87,10 +89,10 @@ namespace Pacman {
 
         private void pacmanGame_Paint(object sender, PaintEventArgs e) {
             player.playerDraw(e.Graphics);
-            //classBlinky.enemyDraw(e.Graphics);
+            classBlinky.enemyDraw(e.Graphics);
             //classPinky.enemyDraw(e.Graphics);
-            //classInky.enemyDraw(e.Graphics);
-            classClyde.enemyDraw(e.Graphics);
+            classInky.enemyDraw(e.Graphics);
+            //classClyde.enemyDraw(e.Graphics);
         }
     }
 }

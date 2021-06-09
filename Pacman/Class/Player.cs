@@ -19,23 +19,23 @@ namespace Pacman {
         int moveY = 0; // 34까지 올라가야 함.
 
         bool isCurveMove = false;
-        bool isLeft = false;
-        bool isRight = true;
-        bool isUp = false;
-        bool isDown = false;
+        public bool isLeft { get; private set; } = false;
+        public bool isRight { get; private set; } = false;
+        public bool isUp { get; private set; } = false;
+        public bool isDown { get; private set; } = false;
         bool isInput = false;
 
         Panel self;
-        Label lblPlayerPos;
+        //Label lblPlayerPos;
 
         Map map = new Map();
 
         public Player(Panel self) {
             this.self = self;
         }
-        public Player(Label lblPlayerPos) {
-            this.lblPlayerPos = lblPlayerPos;
-        }
+        //public Player(Label lblPlayerPos) {
+        //    this.lblPlayerPos = lblPlayerPos;
+        //}
         public Player() {
 
         }
@@ -141,7 +141,6 @@ namespace Pacman {
                     posX++;
                 }
             }
-            lblPlayerPos.Text = posX + "," + posY;
         }
         public void CurveCheck() { // 커브를 찾는 함수
             if (!isInput)
@@ -357,7 +356,7 @@ namespace Pacman {
         int count = 0;
         public void playerDraw(Graphics g) {
             count++;
-            Image imagePlayer = Image.FromFile("G:\\Git\\pacman\\images\\pacmanR " + i + ".png");
+            Image imagePlayer = Image.FromFile(Application.StartupPath + @"\images\pacmanR " + i + ".png");
             
             if(count == 8) {
                 i = i + 1 == 4 ? 2 : i + 1;

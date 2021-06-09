@@ -3084,7 +3084,7 @@ namespace Pacman {
             this.lblTemp.Font = new System.Drawing.Font("굴림", 15F);
             this.lblTemp.ForeColor = System.Drawing.Color.White;
             this.lblTemp.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblTemp.Location = new System.Drawing.Point(648, 31);
+            this.lblTemp.Location = new System.Drawing.Point(36, 24);
             this.lblTemp.Name = "lblTemp";
             this.lblTemp.Size = new System.Drawing.Size(49, 20);
             this.lblTemp.TabIndex = 8;
