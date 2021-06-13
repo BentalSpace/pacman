@@ -17,7 +17,7 @@ namespace Pacman {
         (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 15, 3, 0, 0);
 
         public bool isChangeFirst = false;
-        bool isScatterMode = false;
+        public bool isScatterMode = false;
 
         Map map = new Map();
         Player player;

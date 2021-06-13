@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Pacman {
@@ -11,26 +12,33 @@ namespace Pacman {
         Inky classInky;
         Clyde classClyde;
 
-        int[,] delayTimer = new int[,] {
-            { 7000,20000,7000,20000,5000,20000,5000 },
-            { 7000,20000,7000,20000,5000,1033140,10 },
-            { 5000,20000,5000,20000,5000,1037140,10 }
-        };
-        public int delayIndex = 0;
-
-        public (int, int) playerPosItem;
+        int[,] delayTimer;
+        int levelIndex;
+        int timerIndex;
+        int delayIndex;
 
         bool isFirst = true;
-        
+        bool isChaseScatter; // false일때 Scatter, true일때 chase
 
         public pacmanGame() {
             InitializeComponent();
             player = new Player();
-            manager = new GameManager(pacman, lblScore);
+            manager = new GameManager(player, lblScore);
             classBlinky = new Blinky(player);
             classPinky = new Pinky(player);
             classInky = new Inky(player, classBlinky);
             classClyde = new Clyde(player);
+
+            delayTimer = new int[,] {
+            { 420,1200,420,1200,300,1200,300,999999999 },
+            { 420,1200,420,1200,300,61983,10, 999999999 },
+            { 300,1200,300,1200,300,62223,10, 999999999 }
+            };
+            levelIndex = 0;
+            timerIndex = 0;
+            delayIndex = 0;
+
+            isChaseScatter = false;
         }
 
         private void pacmanGame_KeyDown(object sender, KeyEventArgs e) {
@@ -42,57 +50,77 @@ namespace Pacman {
             player.CurveCheck();
             player.PlayerMove();
             player.CurveMove();
+            switch (levelIndex) {
+                case 0:
+                    if (delayIndex >= delayTimer[0, timerIndex]) {
+                        isChaseScatter = !isChaseScatter;
+                        timerIndex++;
+                        levelIndex++;
+                        delayIndex = 0;
+                        classClyde.isScatterMode = false;
+                    }
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                    if (delayIndex >= delayTimer[1, timerIndex]) {
+                        isChaseScatter = !isChaseScatter;
+                        levelIndex++;
+                        timerIndex++;
+                        delayIndex = 0;
+                        classClyde.isScatterMode = false;
+                    }
+                    break;
+                default:
+                    if (delayIndex >= delayTimer[2, timerIndex]) {
+                        isChaseScatter = !isChaseScatter;
+                        timerIndex++;
+                        delayIndex = 0;
+                        classClyde.isScatterMode = false;
+                    }
+                    break;
+            }
+            delayIndex++;
+            lblTemp.Text = (delayIndex).ToString();
 
             manager.GameControl();
 
-            //classInky.ScatterCheck();
-            //classClyde.ScatterCheck();
 
             //classPinky.PlayerMoveCheck();
-            //classClyde.PlayerCircle();
-            //classClyde.PacmanNearCheck();
+            classClyde.PlayerCircle();
+            classClyde.PacmanNearCheck();
             classInky.PlayerMoveCheck();
 
-            classBlinky.ChaseCheck();
-            //classPinky.ChaseCheck();
-            //classClyde.ChaseCheck();
-            classInky.ChaseCheck();
-
-            //classBlinky.ScatterCheck();
-            //classPinky.ScatterCheck();
-            foreach (Control x in this.Controls) {
-                if (x is Panel) {
-                    manager.ItemEat(x);
-                    manager.ItemReCreate(x);
-                }
+            if (isChaseScatter) {
+                //classBlinky.ChaseCheck();
+                //classPinky.ChaseCheck();
+                classClyde.ChaseCheck();
+                //classInky.ChaseCheck();
             }
-            manager.GameReStart();
+
+            else if (!isChaseScatter) {
+                //classBlinky.ScatterCheck();
+                //classPinky.ScatterCheck();
+                classClyde.ScatterCheck();
+                //classInky.ScatterCheck();
+            }
+            manager.ItemEat();
+            
             Invalidate();
-        }
-        private void ChaseScatterTimer_Tick(object sender, EventArgs e) {
-            //switch (manager.level) {
-            //    case 1:
-            //        enemy.isChaseScatter = !enemy.isChaseScatter;
-            //        if(!isFirst)
-            //            classBlinky.isChangeFirst = true;
-            //        isFirst = false;
-            //        ChaseScatterTimer.Interval = delayIndex >= 7 ? 999999999 : delayTimer[0, delayIndex++];
-            //        break;
-            //    case 2:
-            //    case 3:
-            //    case 4:
-            //        break;
-            //    case 5:
-            //        break;
-            //}
         }
 
         private void pacmanGame_Paint(object sender, PaintEventArgs e) {
+            manager.itemCreate(e.Graphics);
             player.playerDraw(e.Graphics);
-            classBlinky.enemyDraw(e.Graphics);
+            //classBlinky.enemyDraw(e.Graphics);
             //classPinky.enemyDraw(e.Graphics);
-            classInky.enemyDraw(e.Graphics);
-            //classClyde.enemyDraw(e.Graphics);
+            //classInky.enemyDraw(e.Graphics);
+            classClyde.enemyDraw(e.Graphics);
+            //45,105
+        }
+
+        private void pacmanGame_Load(object sender, EventArgs e) {
+            //GameTimer.Interval = 1000 / 60;
         }
     }
 }

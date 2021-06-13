@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Pacman {
     class Player {
-        int speed = 3;
+        float speed = 3.5f;
         string newDir = null;
         string agoDir = null;
         public int posX {
@@ -15,8 +15,8 @@ namespace Pacman {
         } = 23;
         int savePosX = -1;
         int savePosY = -1;
-        int moveX = 0; // 34까지 올라가야 함.
-        int moveY = 0; // 34까지 올라가야 함.
+        float moveX = 0; // 34까지 올라가야 함.
+        float moveY = 0; // 34까지 올라가야 함.
 
         bool isCurveMove = false;
         public bool isLeft { get; private set; } = false;
@@ -77,14 +77,6 @@ namespace Pacman {
             }
             isInput = true;
         }
-        //public void PosCheak() {
-        //    double x1 = self.Location.X - 10;
-        //    double x2 = Math.Ceiling(x1 / 35);
-        //    posX = (int)x2;
-        //    double y1 = self.Location.Y - 70;
-        //    double y2 = Math.Ceiling(y1 / 35);
-        //    posY = (int)y2;
-        //}
         public void PlayerMove() {
             if (isCurveMove)
                 return;
@@ -111,10 +103,7 @@ namespace Pacman {
             }
             if (isLeft) {
                 if (posX == 0 && posY == 14) {
-                    self.Left -= speed;
-                    if (self.Location.X <= -20)
-                        self.Left = 955;
-                    return;
+                    posX = 27;
                 }
                 if (map.ground[posY, posX - 1] == 1) {
                     return;
@@ -127,10 +116,7 @@ namespace Pacman {
             }
             if (isRight) {
                 if (posX == 27 && posY == 14) {
-                    self.Left += speed;
-                    if (self.Location.X >= 955)
-                        self.Left = -20;
-                    return;
+                    posX = 0;
                 }
                 if (map.ground[posY, posX + 1] == 1) {
                     return;
