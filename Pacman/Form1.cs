@@ -23,11 +23,11 @@ namespace Pacman {
         public pacmanGame() {
             InitializeComponent();
             player = new Player();
-            manager = new GameManager(player, lblScore);
             classBlinky = new Blinky(player);
             classPinky = new Pinky(player);
             classInky = new Inky(player, classBlinky);
             classClyde = new Clyde(player);
+            manager = new GameManager(player, lblScore, classBlinky, classPinky, classInky, classClyde);
 
             delayTimer = new int[,] {
             { 420,1200,420,1200,300,1200,300,999999999 },
@@ -91,20 +91,27 @@ namespace Pacman {
             classClyde.PacmanNearCheck();
             classInky.PlayerMoveCheck();
 
-            if (isChaseScatter) {
-                //classBlinky.ChaseCheck();
-                //classPinky.ChaseCheck();
+            if (player.isEatMode) {
+                classBlinky.FrightenedMode();
+                classPinky.FrightenedMode();
+                classClyde.FrightenedMode();
+                classInky.FrightenedMode();
+            }
+            else if (isChaseScatter) {
+                classBlinky.ChaseCheck();
+                classPinky.ChaseCheck();
                 classClyde.ChaseCheck();
-                //classInky.ChaseCheck();
+                classInky.ChaseCheck();
             }
 
             else if (!isChaseScatter) {
-                //classBlinky.ScatterCheck();
-                //classPinky.ScatterCheck();
+                classBlinky.ScatterCheck();
+                classPinky.ScatterCheck();
                 classClyde.ScatterCheck();
-                //classInky.ScatterCheck();
+                classInky.ScatterCheck();
             }
             manager.ItemEat();
+            manager.DiePacman();
             
             Invalidate();
         }
@@ -112,15 +119,15 @@ namespace Pacman {
         private void pacmanGame_Paint(object sender, PaintEventArgs e) {
             manager.itemCreate(e.Graphics);
             player.playerDraw(e.Graphics);
-            //classBlinky.enemyDraw(e.Graphics);
-            //classPinky.enemyDraw(e.Graphics);
-            //classInky.enemyDraw(e.Graphics);
+            classBlinky.enemyDraw(e.Graphics);
+            classPinky.enemyDraw(e.Graphics);
+            classInky.enemyDraw(e.Graphics);
             classClyde.enemyDraw(e.Graphics);
             //45,105
         }
 
         private void pacmanGame_Load(object sender, EventArgs e) {
-            //GameTimer.Interval = 1000 / 60;
+            GameTimer.Interval = 1000 / 60;
         }
     }
 }

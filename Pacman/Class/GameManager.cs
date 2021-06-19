@@ -10,16 +10,21 @@ namespace Pacman {
         public int level = 1;
 
         Player player;
+        Blinky blinky;
+        Pinky pinky;
+        Inky inky;
+        Clyde clyde;
         Map map = new Map();
 
         Label score;
 
-        public GameManager(Player player, Label score) {
+        public GameManager(Player player, Label score, Blinky blinky, Pinky pinky, Inky inky, Clyde clyde) {
             this.player = player;
             this.score = score;
-        }
-        public GameManager() {
-
+            this.blinky = blinky;
+            this.pinky = pinky;
+            this.inky = inky;
+            this.clyde = clyde;
         }
 
         public void ItemEat() {
@@ -32,7 +37,11 @@ namespace Pacman {
                 map.ground[player.posY, player.posX] = 0;
                 scoreInt += 50;
                 eatItem++;
-                //플레이어 식사모드 변환
+                player.isEatMode = true;
+                //blinky.isChangeFirst = true;
+                //pinky.isChangeFirst = true;
+                //inky.isChangeFirst = true;
+                //clyde.isChangeFirst = true;
             }
             score.Text = scoreInt.ToString();
             if (eatItem >= 244)
@@ -51,15 +60,48 @@ namespace Pacman {
                 }
             }
         }
-        public void GameControl() { // 아이템 총 갯수 244
-            if (eatItem == 244) { // 블링키 처음위치 (460,431)
-                //self.Left = 460;
-                //self.Top = 851;
-                player.DirClear();
+        public void DiePacman() { // 플레이어의 목숨은 3개이며, 죽으면 플레이어 포지션 초기값으로 이동, 에너미들 포지션도 초기값으로 이동
+            if (player.posX == blinky.PosX && player.posY == blinky.PosY) {
+                player.isDie = true; // 애니메이션을 위한 bool값
+                charPosClear();
+            }
+            if (player.posX == pinky.PosX && player.posY == pinky.PosY) {
+                player.isDie = true;
+                charPosClear();
+            }
+            if (player.posX == inky.PosX && player.posY == inky.PosY) {
+                player.isDie = true;
+                charPosClear();
+            }
+            if (player.posX == clyde.PosX && player.posY == clyde.PosY) {
+                player.isDie = true;
+                charPosClear();
             }
         }
-        void GameReStart() {
-            //플레이어 포지션 초기화 / 몬스터들 포지션 초기화
+        private void charPosClear() {
+            player.posX = 13;
+            player.posY = 23;
+
+            blinky.PosX = 13;
+            blinky.PosY = 11;
+
+            pinky.PosX = 12; //여기부터 초기값 에너미 집안으로 바꿔줘야 함
+            pinky.PosY = 11;
+
+            inky.PosX = 14;
+            inky.PosY = 11;
+
+            clyde.PosX = 15;
+            clyde.PosY = 11;
+        }
+        public void GameRestart() { // 아이템 총 갯수 244
+            if (eatItem == 244) { // 블링키 처음위치 (460,431)
+                charPosClear();
+                player.DirClear();
+                GameReStart();
+            }
+        }
+        private void GameClear() {
             map = new Map();
             eatItem = 0;
             Thread.Sleep(1000);

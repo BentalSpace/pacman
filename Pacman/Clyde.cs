@@ -5,6 +5,7 @@ using System.Windows.Forms;
 //클라이드 - ScatterMode 사이클 추격으로 변경될때, 같이 바꿔줘야 함.
 namespace Pacman {
     class Clyde : Enemy {
+        Random rand = new Random();
         int scatterPosX = 0;
         int scatterPosY = 30;
 
@@ -14,7 +15,15 @@ namespace Pacman {
         int[,] playerCircleY = new int[8, 2];
 
         string dir = "L";
-        (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 15, 3, 0, 0);
+        (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 15, 11, 0, 0);
+        public int PosX {
+            get { return moveItem.posX; }
+            set { moveItem.posX = value; }
+        }
+        public int PosY {
+            get { return moveItem.posY; }
+            set { moveItem.posY = value; }
+        }
 
         public bool isChangeFirst = false;
         public bool isScatterMode = false;
@@ -162,6 +171,66 @@ namespace Pacman {
             moveItem.isMoving = true;
             isChangeFirst = false;
             moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
+        }
+        public void FrightenedMode() {
+            if (moveItem.isMoving) {
+                moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
+                return;
+            }
+
+            int count = 0;
+
+            int posX = moveItem.posX;
+            int posY = moveItem.posY;
+
+            if (moveItem.lastDir != "D" || isChangeFirst)
+                if (map.groundWL[posY - 1, posX] != 1) {
+                    count++;
+                }
+            if (moveItem.lastDir != "U" || isChangeFirst)
+                if (map.groundWL[posY + 1, posX] != 1) {
+                    count++;
+                }
+            if (moveItem.lastDir != "R" || isChangeFirst)
+                if (map.groundWL[posY, posX - 1] != 1) {
+                    count++;
+                }
+            if (moveItem.lastDir != "L" || isChangeFirst)
+                if (map.groundWL[posY, posX + 1] != 1) {
+                    count++;
+                }
+            int dirNum = rand.Next(0, count);
+            count = 0;
+            if (moveItem.lastDir != "D" || isChangeFirst)
+                if (map.groundWL[posY - 1, posX] != 1) {
+                    if (count == dirNum) {
+                        dir = "U";
+                    }
+                    count++;
+                }
+            if (moveItem.lastDir != "U" || isChangeFirst)
+                if (map.groundWL[posY + 1, posX] != 1) {
+                    if (count == dirNum) {
+                        dir = "D";
+                    }
+                    count++;
+                }
+            if (moveItem.lastDir != "R" || isChangeFirst)
+                if (map.groundWL[posY, posX - 1] != 1) {
+                    if (count == dirNum) {
+                        dir = "L";
+                    }
+                    count++;
+                }
+            if (moveItem.lastDir != "L" || isChangeFirst)
+                if (map.groundWL[posY, posX + 1] != 1) {
+                    if (count == dirNum) {
+                        dir = "R";
+                    }
+                }
+            moveItem.isMoving = true;
+            isChangeFirst = false;
+            moveItem = base.EnemyMove(dir, posX, posY, moveItem.moveX, moveItem.moveY);
         }
         public override void enemyDraw(Graphics g) {
             Image imageClyde = Image.FromFile(Application.StartupPath + @"\images\clydeR " + 1 + ".png");

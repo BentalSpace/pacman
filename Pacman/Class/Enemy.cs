@@ -13,6 +13,7 @@ namespace Pacman {
 
         public bool posChange = false;
         public bool isChaseScatter = true; // true일땐 추격 / false일땐 해산
+        public bool isFrightenedMode = false;
 
         public Enemy() {
         }
@@ -98,6 +99,9 @@ namespace Pacman {
                     break;
             }
             return parentIsMoving;
+        }
+        public void a() {
+
         }
 
         public abstract void ChaseCheck();

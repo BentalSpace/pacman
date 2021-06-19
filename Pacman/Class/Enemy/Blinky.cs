@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 namespace Pacman {
     class Blinky : Enemy {
+        Random rand = new Random();
         int scatterPosX = 24;
         int scatterPosY = 2;
 
@@ -14,10 +15,13 @@ namespace Pacman {
         (string lastDir, bool isMoving, int posX, int posY, int moveX, int moveY) moveItem = ("L", false, 13, 11, 0, 0);
         public int PosX {
             get { return moveItem.posX; }
+            set { moveItem.posX = value; }
         }
+        
         public int PosY {
             get { return moveItem.posY; }
-        }
+            set { moveItem.posY = value; }
+        } 
 
         public bool isChangeFirst = false;
 
@@ -125,6 +129,66 @@ namespace Pacman {
                     int y = posY - scatterPosY;
                     distanceR = (x * x) + (y * y);
                     if (min > distanceR) {
+                        dir = "R";
+                    }
+                }
+            moveItem.isMoving = true;
+            isChangeFirst = false;
+            moveItem = base.EnemyMove(dir, posX, posY, moveItem.moveX, moveItem.moveY);
+        }
+        public void FrightenedMode() {
+            if (moveItem.isMoving) {
+                moveItem = base.EnemyMove(dir, moveItem.posX, moveItem.posY, moveItem.moveX, moveItem.moveY);
+                return;
+            }
+
+            int count = 0;
+
+            int posX = moveItem.posX;
+            int posY = moveItem.posY;
+
+            if (moveItem.lastDir != "D" || isChangeFirst)
+                if (map.groundWL[posY - 1, posX] != 1) {
+                    count++;
+                }
+            if (moveItem.lastDir != "U" || isChangeFirst)
+                if (map.groundWL[posY + 1, posX] != 1) {
+                    count++;
+                }
+            if (moveItem.lastDir != "R" || isChangeFirst)
+                if (map.groundWL[posY, posX - 1] != 1) {
+                    count++;
+                }
+            if (moveItem.lastDir != "L" || isChangeFirst)
+                if (map.groundWL[posY, posX + 1] != 1) {
+                    count++;
+                }
+            int dirNum = rand.Next(0, count);
+            count = 0;
+            if (moveItem.lastDir != "D" || isChangeFirst)
+                if (map.groundWL[posY - 1, posX] != 1) {
+                    if(count == dirNum) {
+                        dir = "U";
+                    }
+                    count++;
+                }
+            if (moveItem.lastDir != "U" || isChangeFirst)
+                if (map.groundWL[posY + 1, posX] != 1) {
+                    if (count == dirNum) {
+                        dir = "D";
+                    }
+                    count++;
+                }
+            if (moveItem.lastDir != "R" || isChangeFirst)
+                if (map.groundWL[posY, posX - 1] != 1) {
+                    if (count == dirNum) {
+                        dir = "L";
+                    }
+                    count++;
+                }
+            if (moveItem.lastDir != "L" || isChangeFirst)
+                if (map.groundWL[posY, posX + 1] != 1) {
+                    if (count == dirNum) {
                         dir = "R";
                     }
                 }

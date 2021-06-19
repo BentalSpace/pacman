@@ -8,10 +8,10 @@ namespace Pacman {
         string newDir = null;
         string agoDir = null;
         public int posX {
-            get; private set;
+            get; set;
         } = 13;
         public int posY {
-            get; private set;
+            get; set;
         } = 23;
         int savePosX = -1;
         int savePosY = -1;
@@ -23,6 +23,8 @@ namespace Pacman {
         public bool isRight { get; private set; } = false;
         public bool isUp { get; private set; } = false;
         public bool isDown { get; private set; } = false;
+        public bool isEatMode { get; set; } = false;
+        public bool isDie = false;
         bool isInput = false;
 
         Panel self;
