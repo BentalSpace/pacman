@@ -1,0 +1,20 @@
+G:\2021 - 1 University\SoloProject\Pacman\Pacman\bin\Debug\Pacman.exe.config
+G:\2021 - 1 University\SoloProject\Pacman\Pacman\bin\Debug\Pacman.exe
+G:\2021 - 1 University\SoloProject\Pacman\Pacman\bin\Debug\Pacman.pdb
+G:\2021 - 1 University\SoloProject\Pacman\Pacman\obj\Debug\Pacman.csprojAssemblyReference.cache
+G:\2021 - 1 University\SoloProject\Pacman\Pacman\obj\Debug\Pacman.Properties.Resources.resources
+G:\2021 - 1 University\SoloProject\Pacman\Pacman\obj\Debug\Pacman.csproj.GenerateResource.cache
+G:\2021 - 1 University\SoloProject\Pacman\Pacman\obj\Debug\Pacman.csproj.CoreCompileInputs.cache
+G:\2021 - 1 University\SoloProject\Pacman\Pacman\obj\Debug\Pacman.exe
+G:\2021 - 1 University\SoloProject\Pacman\Pacman\obj\Debug\Pacman.pdb
+G:\2021 - 1 University\SoloProject\Pacman\Pacman\obj\Debug\Pacman.pacmanGame.resources
+G:\Git\pacman\Pacman\Pacman\bin\Debug\Pacman.exe.config
+G:\Git\pacman\Pacman\Pacman\bin\Debug\Pacman.exe
+G:\Git\pacman\Pacman\Pacman\bin\Debug\Pacman.pdb
+G:\Git\pacman\Pacman\Pacman\obj\Debug\Pacman.csprojAssemblyReference.cache
+G:\Git\pacman\Pacman\Pacman\obj\Debug\Pacman.pacmanGame.resources
+G:\Git\pacman\Pacman\Pacman\obj\Debug\Pacman.Properties.Resources.resources
+G:\Git\pacman\Pacman\Pacman\obj\Debug\Pacman.csproj.GenerateResource.cache
+G:\Git\pacman\Pacman\Pacman\obj\Debug\Pacman.csproj.CoreCompileInputs.cache
+G:\Git\pacman\Pacman\Pacman\obj\Debug\Pacman.exe
+G:\Git\pacman\Pacman\Pacman\obj\Debug\Pacman.pdb
